@@ -1,0 +1,33 @@
+{
+  "name": "express_graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "dependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^18.0.6",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^16.5.0",
+    "nodemon": "^2.0.19"
+  },
+  "devDependencies": {
+    "apollo-server-core": "^3.10.0",
+    "apollo-server-express": "^3.10.0",
+    "typescript": "^4.7.4"
+  },
+  "scripts": {
+    "dev": "nodemon app/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/outsider987/express_graphql.git"
+  },
+  "author": "Victor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/outsider987/express_graphql/issues"
+  },
+  "homepage": "https://github.com/outsider987/express_graphql#readme"
+}

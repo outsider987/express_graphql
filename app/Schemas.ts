@@ -8,6 +8,11 @@ const Schema = gql`
   type Query {
     getAllPeople: [Person] #will return multiple Person instances
     getPerson(id: Int): Person #has an argument of 'id' of type Integer.
+  },
+  type Mutation {
+    #the addPerson commmand will accept an argument of type String.
+    #it will return a 'Person' instance. 
+    addPerson(name: String): Person
   }
 `;
 

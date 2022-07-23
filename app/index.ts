@@ -11,15 +11,17 @@ async function startApolloServer(schema: any, resolvers: any) {
   const server = new ApolloServer({
     typeDefs: schema,
     resolvers,
+    introspection:true,
     //tell Express to attach GraphQL functionality to the server
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  }) as any;
+  });
   await server.start(); //start the GraphQL server.
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app,path:'/api' });
+  const port  = process.env.PORT || 4000;
   await new Promise<void>((resolve) =>
-    httpServer.listen({ port: 4000 }, resolve) //run the server on port 4000
+    httpServer.listen({ port:  port}, resolve) //run the server on port 4000
   );
-  console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);
+  console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`);
 }
 //in the end, run the server and pass in our Schema and Resolver.
 startApolloServer(Schema, Resolvers);

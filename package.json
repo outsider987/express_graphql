@@ -19,7 +19,7 @@
   },
   "scripts": {
     "dev": "nodemon app/index.ts", 
-    "start": "node dist/index.js",
+    "start": "node dist/index.js  -p $PORT",
     "deploy": "git add . && git commit -m Heroku && git push ",
     "postinstall": "tsc "
   },

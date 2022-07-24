@@ -11,6 +11,7 @@ async function startApolloServer(schema: any, resolvers: any) {
   const server = new ApolloServer({
     typeDefs: schema,
     resolvers,
+    introspection:true,
     //tell Express to attach GraphQL functionality to the server
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });

@@ -1,11 +1,16 @@
 import { ApolloServer } from 'apollo-server-express';
-import Schema from './Schemas';
-import Resolvers from './Resolvers';
 import express from 'express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import http from 'http';
-import mongoose from 'mongoose';
 import 'dotenv/config';
+
+import SequelizeConnect from './providers/SequelizeConnect';
+
+import console from 'console';
+import Resolvers from './graphql/Resolvers';
+import Schema from './graphql/Schemas';
+import db from './models'
+// import User from './models/user';
 
 async function startApolloServer(schema: any, resolvers: any) {
     try {
@@ -24,15 +29,13 @@ async function startApolloServer(schema: any, resolvers: any) {
         await new Promise<void>(
             (resolve) => httpServer.listen({ port: port }, resolve) //run the server on port 4000
         );
+        // const t = await SequelizeConnect().authenticate();
+        // db.User = require('./models/User')(sequelize);
+        // await SequelizeConnect().sync({logging:console.log,force:true});
+        await db.sequelize.sync({logging:console.log});
+        // console.log(t2 );
+ 
         console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`);
-
-        const option = {
-            user: process.env.MONGO_USER,
-            pass: process.env.MONGO_PASSWORD,
-        };
-        const result = await mongoose.connect(process.env.MONGODB_URI as string);
-
-        
     } catch (error) {
         console.log(error);
     }

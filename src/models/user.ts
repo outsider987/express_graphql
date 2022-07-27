@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { DataTypes, ModelCtor, Model, UUIDV4, Sequelize } from 'sequelize';
-import SequelizeConnect from '../providers/SequelizeConnect';
 
-interface UserAttribute {
+export interface UserAttribute {
     id: number;
     status: string;
     username: string;
@@ -10,7 +9,7 @@ interface UserAttribute {
     password: string;
 }
 
-class User extends Model<UserAttribute> implements UserAttribute {
+export class UserModel extends Model<UserAttribute> implements UserAttribute {
     public id!: number;
     public status!: string;
     public username!: string;
@@ -19,13 +18,14 @@ class User extends Model<UserAttribute> implements UserAttribute {
     static assoicate(models: any) {
         // User.belongsToMany(models.User,)
     }
-    static async getUsers() {
-        return this.findAll();
+    static async users() {
+        return await this.findAll();
     }
+    
 }
 
 module.exports = (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
-    User.init(
+    UserModel.init(
         {
             id: {
                 type: DataTypes.UUID,
@@ -62,5 +62,5 @@ module.exports = (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
             paranoid: true,
         }
     );
-    return User;
+    return UserModel;
 };

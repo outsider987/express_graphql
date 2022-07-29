@@ -1,4 +1,4 @@
-import { UserModel } from './../models/user';
+// import User  from './../models/user';
 import { gql } from "apollo-server-express"; //will create a schema
 
 const typeDefs = gql`
@@ -8,11 +8,15 @@ const typeDefs = gql`
     username: String!
     email: String!
     password: String!
-    # users:[Users!]!
+  }
+  type Tokens {
+    id: ID!
+
   }
   #handle user commands
   type Query {
     users: [Users] #will return multiple Person instances
+    tokens:[Tokens]
     # getPerson(id: Int): Person #has an argument of 'id' of type Integer.
   },
 #   type Mutation {

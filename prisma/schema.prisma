@@ -1,35 +1,35 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model tokens {
-  id              Int       @id @default(autoincrement())
-  token_enabledId String?   @db.VarChar(255)
-  token_type      String?   @db.VarChar(255)
-  status          String?   @db.VarChar(255)
-  expiresAt       DateTime  @db.DateTime(0)
-  createdAt       DateTime  @db.DateTime(0)
-  updatedAt       DateTime  @db.DateTime(0)
-  deletedAt       DateTime? @db.DateTime(0)
+    id              Int       @id @default(autoincrement())
+    token_enabledId String?   @db.VarChar(255)
+    token_type      String?   @db.VarChar(255)
+    status          String?   @db.VarChar(255)
+    expiresAt       DateTime  @db.DateTime(0)
+    createdAt       DateTime  @db.DateTime(0)
+    updatedAt       DateTime  @db.DateTime(0)
+    deletedAt       DateTime? @db.DateTime(0)
 }
 
 model users {
-  id        String       @id @db.Char(36)
-  status    users_status @default(active)
-  username  String       @unique(map: "username") @db.VarChar(255)
-  email     String       @db.VarChar(255)
-  password  String       @db.VarChar(255)
-  createdAt DateTime     @db.DateTime(0)
-  updatedAt DateTime     @db.DateTime(0)
-  deletedAt DateTime?    @db.DateTime(0)
+    id        Int          @id @default(autoincrement())
+    status    users_status @default(active)
+    username  String       @unique @db.VarChar(255)
+    email     String       @db.VarChar(255)
+    password  String       @db.VarChar(255)
+    createdAt DateTime     @db.DateTime(0)
+    updatedAt DateTime     @db.DateTime(0)
+    deletedAt DateTime?    @db.DateTime(0)
 }
 
 enum users_status {
-  active
-  disabled
+    active
+    disabled
 }

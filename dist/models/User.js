@@ -1,88 +1,61 @@
 "use strict";
-// /* eslint-disable no-unused-vars */
-// import { DataTypes, ModelCtor, Model, UUIDV4, Sequelize } from 'sequelize';
-// export type UserAttribute ={
-//     id: number;
-//     status: string;
-//     username: string;
-//     email: string;
-//     password: string;
-// }
-// export default class User extends Model<UserAttribute> implements UserAttribute {
-//     public id!: number;
-//     public status!: string;
-//     public username!: string;
-//     public email!: string;
-//     public password!: string;
-//     static assoicate(models: any) {
-//         // User.belongsToMany(models.User,)
-//     }
-//     static async getUsers() {
-//         return await this.findAll();
-//     }
-// }
-// module.exports = (sequelize: Sequelize, dataTypes: typeof DataTypes) => {
-//     User.init(
-//         {
-//             id: {
-//                 type: DataTypes.UUID,
-//                 primaryKey: true,
-//                 defaultValue: UUIDV4,
-//                 allowNull: false,
-//             },
-//             status: {
-//                 type: DataTypes.ENUM,
-//                 values: ['active', 'disabled'],
-//                 defaultValue: 'active',
-//                 allowNull: false,
-//             },
-//             username: {
-//                 type: DataTypes.STRING,
-//                 allowNull: false,
-//                 unique: true,
-//             },
-//             email: {
-//                 type: DataTypes.STRING,
-//                 validate: {
-//                     isEmail: true,
-//                 },
-//                 allowNull: false,
-//             },
-//             password: {
-//                 type: DataTypes.STRING,
-//                 allowNull: false,
-//             },
-//         },
-//         {
-//             timestamps: true,
-//             sequelize: sequelize,
-//             paranoid: true,
-//         }
-//     );
-//     return User;
-// };
-// code above unchanged
-model;
-User;
-{
-    id;
-    String;
-    (uuid());
-    createdAt;
-    DateTime;
-    (now());
-    updatedAt;
-    DateTime;
-    email;
-    String ?  : ;
-    image;
-    String ?
-        role : ;
-    Role;
-    (USER);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable no-unused-vars */
+const sequelize_1 = require("sequelize");
+class User extends sequelize_1.Model {
+    static assoicate(models) {
+        // User.belongsToMany(models.User,)
+    }
+    static getUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.findAll();
+        });
+    }
 }
-var Role;
-(function (Role) {
-    Role[Role["USER"] = 0] = "USER";
-    Role[Role["ADMIN"] = 1] = "ADMIN";
-})(Role || (Role = {}));
+exports.default = User;
+module.exports = (sequelize, dataTypes) => {
+    User.init({
+        id: {
+            type: sequelize_1.DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: sequelize_1.UUIDV4,
+            allowNull: false,
+        },
+        status: {
+            type: sequelize_1.DataTypes.ENUM,
+            values: ['active', 'disabled'],
+            defaultValue: 'active',
+            allowNull: false,
+        },
+        username: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+        },
+        email: {
+            type: sequelize_1.DataTypes.STRING,
+            validate: {
+                isEmail: true,
+            },
+            allowNull: false,
+        },
+        password: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
+    }, {
+        timestamps: true,
+        sequelize: sequelize,
+        paranoid: true,
+    });
+    return User;
+};

@@ -1,5 +1,4 @@
-import * as Query from './Query';
-import userResolver from './Query/user';
+import * as Query from './schemas/Query';
 
 
 const resolvers = {

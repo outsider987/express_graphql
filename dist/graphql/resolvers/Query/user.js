@@ -1,12 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const models_1 = __importDefault(require("../../../models"));
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
 const userResolver = () => {
-    // console.log(JSON.stringify(db) );
-    // const t = new User();
-    return models_1.default.User.findAll();
+    return prisma.users.findMany();
+    -;
 };
 exports.default = userResolver;

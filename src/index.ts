@@ -3,19 +3,18 @@ import express from 'express';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import http from 'http';
 import 'dotenv/config';
-
-
-
 import console from 'console';
-// import Resolvers from './graphql/Resolvers';
-
-import typeDefs from './graphql/typeDefs';
-import db from './models'
 import resolvers from './graphql/resolvers';
-// import User from './models/user';
+import typeDefs from './graphql/resolvers/schemas/typedefs';
+import { PrismaClient } from '@prisma/client';
+// import { GraphQLObjectType } from 'graphql';
+const prisma = new PrismaClient();
+
 
 async function startApolloServer(schema: any, resolvers: any) {
     try {
+        // const t = await prisma.users.findMany({});
+        // console.log(t);
         const app = express();
         const httpServer = http.createServer(app);
         const server = new ApolloServer({
@@ -31,9 +30,7 @@ async function startApolloServer(schema: any, resolvers: any) {
         await new Promise<void>(
             (resolve) => httpServer.listen({ port: port }, resolve) //run the server on port 4000
         );
-        await db.sequelize.sync({logging:console.log});
-        // console.log(t2 );
- 
+     
         console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`);
     } catch (error) {
         console.log(error);

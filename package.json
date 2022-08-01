@@ -6,6 +6,7 @@
   "dependencies": {
     "@babel/core": "^7.18.9",
     "@babel/register": "^7.18.9",
+    "@prisma/client": "^4.1.1",
     "@types/express": "^4.17.13",
     "@types/node": "^18.0.6",
     "dotenv": "^16.0.1",
@@ -20,12 +21,15 @@
     "@types/mysql": "^2.15.21",
     "apollo-server-core": "^3.10.0",
     "apollo-server-express": "^3.10.0",
+    "graphql-codegen": "^0.4.0",
     "path": "^0.12.7",
-    "prisma": "2.30.3",
+    "prisma": "^4.0",
+    "prismix": "^1.0.21",
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "dev": "nodemon  src/index.ts --watch ",
+    "prismix": "npx prismix && prisma format",
+    "dev": " nodemon  src/index.ts --watch ",
     "start": "node dist/index.js  -p $PORT",
     "deploy": "git add . && git commit -m Heroku && git push ",
     "postinstall": "tsc "

@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Query = __importStar(require("./Query"));
+const Query = __importStar(require("./schemas/Query"));
 const resolvers = {
     Query
 };

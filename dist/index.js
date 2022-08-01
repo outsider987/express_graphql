@@ -18,11 +18,8 @@ const apollo_server_core_1 = require("apollo-server-core");
 const http_1 = __importDefault(require("http"));
 require("dotenv/config");
 const console_1 = __importDefault(require("console"));
-// import Resolvers from './graphql/Resolvers';
-const typeDefs_1 = __importDefault(require("./graphql/typeDefs"));
-const models_1 = __importDefault(require("./models"));
 const resolvers_1 = __importDefault(require("./graphql/resolvers"));
-// import User from './models/user';
+const typedefs_1 = __importDefault(require("./graphql/resolvers/schemas/typedefs"));
 function startApolloServer(schema, resolvers) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -40,8 +37,6 @@ function startApolloServer(schema, resolvers) {
             const port = process.env.PORT || 4000;
             yield new Promise((resolve) => httpServer.listen({ port: port }, resolve) //run the server on port 4000
             );
-            yield models_1.default.sequelize.sync({ logging: console_1.default.log });
-            // console.log(t2 );
             console_1.default.log(`Server ready at http://localhost:${port}${server.graphqlPath}`);
         }
         catch (error) {
@@ -50,4 +45,4 @@ function startApolloServer(schema, resolvers) {
     });
 }
 //in the end, run the server and pass in our Schema and Resolver.
-startApolloServer(typeDefs_1.default, resolvers_1.default);
+startApolloServer(typedefs_1.default, resolvers_1.default);

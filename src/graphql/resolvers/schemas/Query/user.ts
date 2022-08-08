@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-// import { GraphQLObjectType } from 'graphql';
 const prisma = new PrismaClient();
 const userResolver =  () => {
 

@@ -1,2 +1,4 @@
+import tokenDefs from "./tokens";
 import userDefs from "./userDefs";
-export default [userDefs];
+
+export default [userDefs,tokenDefs];

@@ -4,21 +4,22 @@ import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import http from 'http';
 import 'dotenv/config';
 import console from 'console';
-import resolvers from './graphql/resolvers';
-import typeDefs from './graphql/resolvers/schemas/typedefs';
+import resolvers from './graphql/schemas/resolvers';
+import typeDefs from './graphql/schemas/typedefs';
 import { PrismaClient } from '@prisma/client';
+import { createContext } from './graphql/schemas/context';
+
 // import { GraphQLObjectType } from 'graphql';
 const prisma = new PrismaClient();
 
 
 async function startApolloServer(schema: any, resolvers: any) {
     try {
-        // const t = await prisma.users.findMany({});
-        // console.log(t);
         const app = express();
         const httpServer = http.createServer(app);
         const server = new ApolloServer({
             typeDefs: schema,
+            context:createContext,
             resolvers,
             introspection: true,
             //tell Express to attach GraphQL functionality to the server

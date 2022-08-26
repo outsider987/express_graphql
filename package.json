@@ -3,36 +3,40 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
-  "dependencies": {
-    "@babel/core": "^7.18.9",
-    "@babel/register": "^7.18.9",
+
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.11.8",
+    "@graphql-codegen/typescript-operations": "^2.5.3",
+    "@graphql-codegen/typescript-resolvers": "^2.7.3",
+    "@graphql-typed-document-node/core": "^3.1.1",
+    "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^8.5.9",
+    "apollo-server-core": "^3.10.0",
+    "apollo-server-express": "^3.10.0",
+    "graphql-codegen": "^0.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "path": "^0.12.7",
+    "prisma": "^4.0",
+    "prismix": "^1.0.21",
+    "bcrypt": "^5.0.1",
+    "typescript": "^4.7.4",
     "@prisma/client": "^4.1.1",
     "@types/express": "^4.17.13",
     "@types/node": "^18.0.6",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "express-graphql": "^0.12.0",
-    "graphql": "^16.5.0",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.3.3",
+    "graphql": "^16.6.0",
     "nodemon": "^2.0.19"
-  },
-  "devDependencies": {
-    "@types/mysql": "^2.15.21",
-    "apollo-server-core": "^3.10.0",
-    "apollo-server-express": "^3.10.0",
-    "graphql-codegen": "^0.4.0",
-    "path": "^0.12.7",
-    "prisma": "^4.0",
-    "prismix": "^1.0.21",
-    "typescript": "^4.7.4"
   },
   "scripts": {
     "prismix": "npx prismix && prisma format",
-    "dev": " nodemon  src/index.ts --watch ",
+    "dev": "prisma generate && nodemon  src/index.ts --watch ",
     "start": "node dist/index.js  -p $PORT",
     "deploy": "git add . && git commit -m Heroku && git push ",
-    "postinstall": "tsc "
+    "postinstall": "tsc ",
+    "codegen": "graphql-code-generator --config codegen.yml",
+    "generate": "graphql-codegen"
+
   },
   "repository": {
     "type": "git",

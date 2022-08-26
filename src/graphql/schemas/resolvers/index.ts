@@ -1,13 +1,14 @@
 import Query from './Query';
-import * as Mutation from './Mutation';
-// import userResolver from './Query/user';
+import Mutation from './Mutation';
 
 
 const resolvers = {
-    Query:{
-        ...Query
-    }
-    // Mutation
-}
+    Query: {
+        ...Query,
+    },
+    Mutation: {
+        ...Mutation,
+    },
+};
 
-export  default  resolvers;
+export default resolvers;

@@ -8,9 +8,8 @@ const Users={
     },
     user:async (parent:any,data:any)=>
     {
-        const {id}=data
-        console.log(id);
-        return prisma.users.findMany({where:{id}})
+
+        return prisma.users.findMany({where:{...data}})
     }
     }
 export default  Users ;

@@ -1,0 +1,23 @@
+schema: http://localhost:4000/api
+# documents: ./src/graphql/*.graphql
+generates:
+  src/graphql/generated/generated.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      mapperTypeSuffix: Model
+      mappers:
+        users: '@prisma/client#users'
+      # inputMaybeValue: undefined | T
+# schema: "src/graphql/generated/schema.graphql"
+# documents: null
+# generates:
+#   src/graphql/generated/graphql.ts:
+#     plugins:
+#       - typescript-operations
+#       - typescript-resolvers
+#   config:
+#     mappers:
+#       users: .prisma/client#User as UserModel
+#     inputMaybeValue: undefined | T

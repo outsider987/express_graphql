@@ -14,7 +14,7 @@ const corsOptions = {
 };
 
 const app = express();
-const port = 4000;
+const port = process.env.PORT? Number(process.env.PORT) :4000;
 const server = new Server(app, prisma, port);
 
 const globalMiddleware: Array<RequestHandler> = [

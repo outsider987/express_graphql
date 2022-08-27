@@ -19,5 +19,6 @@ app.use(cors(corsOptions));
 const port = 4000;
 
 for (const route of router) {
+    
     app.use(route.getRouter());
   }

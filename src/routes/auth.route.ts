@@ -10,7 +10,7 @@ class AuthRoute extends Route {
   }
 
   protected setRoutes() {
-    this.router.get("/planField", this.authController.Register);
+    this.router.get("/", this.authController.Register);
  
   }
 }

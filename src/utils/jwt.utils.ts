@@ -1,4 +1,4 @@
-import { sign, SignOptions } from 'jsonwebtoken';
+import {sign, SignOptions} from 'jsonwebtoken';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -10,24 +10,21 @@ export function generateToken() {
   const payload = {
     name: 'Andrés Reales',
     userId: 123,
-    accessTypes: [
-      'getTeams',
-      'addTeams',
-      'updateTeams',
-      'deleteTeams'
-    ]
+    accessTypes: ['getTeams', 'addTeams', 'updateTeams', 'deleteTeams'],
   };
   // read private key value
-  const privateKey = fs.readFileSync(path.join(__dirname, './../../../private.key'));
+  const privateKey = fs.readFileSync(
+      path.join(__dirname, './../../../private.key'),
+  );
 
   const signInOptions: SignOptions = {
     // RS256 uses a public/private key pair. The API provides the private key
     // to generate the JWT. The client gets a public key to validate the
     // signature
     algorithm: 'RS256',
-    expiresIn: '1h'
+    expiresIn: '1h',
   };
 
   // generate JWT
   return sign(payload, privateKey, signInOptions);
-};
+}

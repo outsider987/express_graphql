@@ -11,7 +11,7 @@ const dbConfig = {
 };
 
 export default {
-  port: parseInt(process.env.DB_PORT as  string, 10) || 3000,
+  port: parseInt(process.env.DB_PORT as string, 10) || 3000,
 
   ...dbConfig,
 

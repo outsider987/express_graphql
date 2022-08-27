@@ -1,10 +1,10 @@
-import express from 'express';
+import express, { json, RequestHandler, urlencoded } from 'express';
 import cors from "cors";
-import { router } from "./router";
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
+import Server from './http/services/server';
+import controllers from './http/controllers';
 
-// import { GraphQLObjectType } from 'graphql';
 const prisma = new PrismaClient();
 
 const corsOptions = {
@@ -14,11 +14,20 @@ const corsOptions = {
 };
 
 const app = express();
-app.use(express.json());
-app.use(cors(corsOptions));
 const port = 4000;
+const server = new Server(app, prisma, port);
 
-for (const route of router) {
-    
-    app.use(route.getRouter());
-  }
+const globalMiddleware: Array<RequestHandler> = [
+    urlencoded({ extended: false }),
+    json(),
+    cors(corsOptions),
+    // ...
+];
+
+Promise.resolve()
+    .then(() => server.initDatabase())
+    .then(() => {
+        server.loadMiddleware(globalMiddleware);
+        server.loadControllers(controllers);
+        server.run();
+    });

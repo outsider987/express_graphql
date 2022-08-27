@@ -3,30 +3,34 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
-
   "devDependencies": {
     "@graphql-codegen/cli": "^2.11.8",
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@graphql-codegen/typescript-resolvers": "^2.7.3",
     "@graphql-typed-document-node/core": "^3.1.1",
+    "@prisma/client": "^4.1.1",
     "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.9",
+    "@types/node": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
     "apollo-server-core": "^3.10.0",
     "apollo-server-express": "^3.10.0",
-    "graphql-codegen": "^0.4.0",
-    "jsonwebtoken": "^8.5.1",
-    "path": "^0.12.7",
-    "prisma": "^4.0",
-    "prismix": "^1.0.21",
     "bcrypt": "^5.0.1",
-    "typescript": "^4.7.4",
-    "@prisma/client": "^4.1.1",
-    "@types/express": "^4.17.13",
-    "@types/node": "^18.0.6",
     "dotenv": "^16.0.1",
+    "eslint": ">=5.16.0",
+    "eslint-config-google": "^0.14.0",
     "express": "^4.18.1",
     "graphql": "^16.6.0",
-    "nodemon": "^2.0.19"
+    "graphql-codegen": "^0.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.19",
+    "path": "^0.12.7",
+    "prettier": "^2.6.2",
+    "prisma": "^4.0",
+    "prismix": "^1.0.21",
+    "typescript": "^4.7.4"
   },
   "scripts": {
     "prismix": "npx prismix && prisma format",
@@ -35,8 +39,8 @@
     "deploy": "git add . && git commit -m Heroku && git push ",
     "postinstall": "tsc ",
     "codegen": "graphql-code-generator --config codegen.yml",
-    "generate": "graphql-codegen"
-
+    "generate": "graphql-codegen",
+    "lint": "npx prettier  src/**/*.ts --write && eslint --fix src/**/*.ts "
   },
   "repository": {
     "type": "git",

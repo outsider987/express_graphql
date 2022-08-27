@@ -3,7 +3,7 @@ module.exports = {
     'browser': true,
     'es2021': true
   },
-  'extends': ['google'],
+//   'extends': [],
   'parser': '@typescript-eslint/parser',
   'parserOptions': {
     'ecmaVersion': 'latest'

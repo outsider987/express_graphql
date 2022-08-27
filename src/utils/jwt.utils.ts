@@ -1,4 +1,4 @@
-import {sign, SignOptions} from 'jsonwebtoken';
+import { sign, SignOptions } from 'jsonwebtoken';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -14,7 +14,7 @@ export function generateToken() {
   };
   // read private key value
   const privateKey = fs.readFileSync(
-      path.join(__dirname, './../../../private.key'),
+    path.join(__dirname, './../../../private.key')
   );
 
   const signInOptions: SignOptions = {

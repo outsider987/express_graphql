@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction, Router, RequestHandler } from 'express';
-
+// import { tryCatch } from '../../utils/response';
+import { tryCatch } from '~/utils/response';
 // HTTP methods
 export enum Methods {
     GET = 'GET',
@@ -34,7 +35,7 @@ export default abstract class Controller {
             };
             switch (route.method) {
                 case 'GET':
-                    this.router.get(route.path, route.handler);
+                    this.router.get(route.path, tryCatch(route.handler));
                     break;
                 case 'POST':
                     this.router.post(route.path, route.handler);

@@ -19,10 +19,15 @@
         "baseUrl": "src",
         "esModuleInterop":true,
         "allowJs": true,
+        "skipLibCheck":true,
         "paths": {
             "~/*": ["*"] // resolve any `~/foo/bar` to `<baseUrl>/foo/bar`
         }
     },
     "include": ["src", "./src/index.d.ts"],
-    "exclude": ["node_modules", "build"]
+    "exclude": ["node_modules", "build"],
+    "ts-node": {
+        // Do not forget to `npm i -D tsconfig-paths`
+        "require": ["tsconfig-paths/register"]
+      },
 }

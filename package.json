@@ -30,14 +30,16 @@
     "prettier": "^2.6.2",
     "prisma": "^4.0",
     "prismix": "^1.0.21",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.0",
     "typescript": "^4.7.4"
   },
   "scripts": {
     "prismix": "npx prismix && prisma format",
+    "pre-env":"npm i -D tsconfig-paths",
     "dev": "prisma generate && nodemon  src/index.ts --watch ",
-    "start": "tsc && node dist/index.js  -p $PORT",
+    "start": " tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/index.js  -p $PORT",
     "deploy": "git add . && git commit -m Heroku && git push ",
-    "postinstall": "tsc ",
     "codegen": "graphql-code-generator --config codegen.yml",
     "generate": "graphql-codegen",
     "lint": "npx prettier  src/**/*.ts --write && eslint --fix src/**/*.ts "

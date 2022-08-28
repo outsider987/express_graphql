@@ -1,5 +1,5 @@
-import {PrismaClient} from '@prisma/client';
-import {Application, RequestHandler} from 'express';
+import { PrismaClient } from '@prisma/client';
+import { Application, RequestHandler } from 'express';
 import Controller from '~/http/controllers/Controller';
 import http from 'http';
 

@@ -1,13 +1,9 @@
-import {PrismaClient} from '@prisma/client';
-import {Request, Response} from 'express';
-import {METHODS} from 'http';
-import Controller from '../controllers/Controller';
-const prisma = new PrismaClient();
+import { Request, Response } from 'express';
+import BaseService from './baseService';
 
-class UserService {
-  constructor() {}
+class UserService extends BaseService {
   async users(res: Request) {
-    return prisma.users.findMany();
+    return this.prisma.users.findMany();
   }
 }
 export default UserService;

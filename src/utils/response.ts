@@ -15,5 +15,3 @@ export const tryCatch =
       next(error);
     }
   };
-
-  

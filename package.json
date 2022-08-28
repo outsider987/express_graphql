@@ -2,7 +2,7 @@
   "name": "express_graphql",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "app.ts",
   "devDependencies": {
     "@graphql-codegen/cli": "^2.11.8",
     "@graphql-codegen/typescript-operations": "^2.5.3",
@@ -36,10 +36,11 @@
   },
   "scripts": {
     "prismix": "npx prismix && prisma format",
-    "pre-env":"npm i -D tsconfig-paths",
-    "dev": "prisma generate && nodemon  src/index.ts --watch ",
+    "pre-env": "npm i -D tsconfig-paths",
+    "dev": "prisma generate && nodemon  src/app.ts --watch ",
     "start": " tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/index.js  -p $PORT",
     "deploy": "git add . && git commit -m Heroku && git push ",
+    "swagger-autogen": "node ./swagger.js",
     "codegen": "graphql-code-generator --config codegen.yml",
     "generate": "graphql-codegen",
     "lint": "npx prettier  src/**/*.ts --write && eslint --fix src/**/*.ts "
@@ -53,5 +54,9 @@
   "bugs": {
     "url": "https://github.com/outsider987/express_graphql/issues"
   },
-  "homepage": "https://github.com/outsider987/express_graphql#readme"
+  "homepage": "https://github.com/outsider987/express_graphql#readme",
+  "dependencies": {
+    "express-validator": "^6.14.2",
+    "swagger-autogen": "^2.21.5"
+  }
 }

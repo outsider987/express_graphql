@@ -9,6 +9,7 @@ datasource db {
 
 model tokens {
     id              Int       @id @default(autoincrement())
+    user_id         Int
     token_enabledId String?   @db.VarChar(255)
     token_type      String?   @db.VarChar(255)
     status          String?   @db.VarChar(255)
@@ -16,10 +17,11 @@ model tokens {
     createdAt       DateTime  @default(now())
     updatedAt       DateTime  @updatedAt
     deletedAt       DateTime? @db.DateTime(0)
+    user            users     @relation(fields: [user_id], references: [user_id])
 }
 
 model users {
-    id        Int          @id @default(autoincrement())
+    user_id   Int          @id @default(autoincrement())
     status    users_status @default(active)
     username  String       @unique @db.VarChar(255)
     email     String       @db.VarChar(255)
@@ -27,6 +29,7 @@ model users {
     createdAt DateTime     @default(now())
     updatedAt DateTime     @updatedAt
     deletedAt DateTime?    @db.DateTime(0)
+    tokens    tokens[]
 }
 
 enum users_status {

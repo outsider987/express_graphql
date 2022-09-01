@@ -1,12 +1,9 @@
 import { IRoute, Request, Response } from 'express';
 import AuthService from '../services/auth';
 import Controller, { Methods } from './Controller';
-import { prisma, Prisma, users } from '@prisma/client';
+import { prisma, Prisma, user } from '@prisma/client';
 import { body } from 'express-validator';
-interface tt {
-  test: string;
-}
-var modal = <tt>{};
+
 // modal.
 class AuthController extends Controller {
   constructor() {
@@ -17,14 +14,22 @@ class AuthController extends Controller {
         path: '/register',
         method: Methods.POST,
         handler: this.Register,
-        validation: [body('').isEmail()],
+        validation: [
+          body(Prisma.UserScalarFieldEnum.email).isEmail().isString().isEmpty(),
+          body(Prisma.UserScalarFieldEnum.username).isEmpty().isString(),
+          body(Prisma.UserScalarFieldEnum.password)
+            .isLowercase()
+            .isUppercase()
+            .isString(),
+        ],
       },
     ];
   }
   async Register(req: Request, res: Response) {
     const authService = new AuthService();
     const dates = await authService.register(req);
-    res.send(dates);
+    
+    await res.send( dates);
   }
 }
 

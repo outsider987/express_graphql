@@ -5,4 +5,5 @@ const endpointsFiles = ["src/http/controllers/Controller.ts"];
 const doc = {
   host: "localhost:4000",
 };
+
 swaggerAutogen(outputFile, endpointsFiles, doc);

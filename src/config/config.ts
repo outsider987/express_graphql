@@ -19,8 +19,7 @@ export default {
 
   logs: {
     level:
-      process.env.LOG_LEVEL ||
-      (process.env.NODE_ENV === 'test' ? 'warning' : 'silly'),
+      process.env.LOG_LEVEL || (process.env.NODE_ENV === 'test' ? 'warning' : 'silly'),
   },
 
   mailHost: process.env.MAIL_HOST,

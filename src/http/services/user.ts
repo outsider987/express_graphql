@@ -3,7 +3,7 @@ import BaseService from './baseService';
 
 class UserService extends BaseService {
   async users(res: Request) {
-    return this.prisma.users.findMany();
+    return this.prisma.user.findMany();
   }
 }
 export default UserService;

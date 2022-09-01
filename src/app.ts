@@ -8,13 +8,9 @@ import bodyParser from 'body-parser';
 const prisma = new PrismaClient();
 
 const corsOptions = {
-  origin: ['http://www.example.com', 'http://localhost:3000'],
+  origin: ['http://www.example.com', 'http://localhost:8080'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'Access-Control-Allow-Origin',
-  ],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'],
 };
 
 const app = express();

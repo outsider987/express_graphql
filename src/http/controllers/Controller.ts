@@ -1,11 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import {
-  Response,
-  Request,
-  NextFunction,
-  Router,
-  RequestHandler,
-} from 'express';
+import { Response, Request, NextFunction, Router, RequestHandler } from 'express';
 import { ValidationChain } from 'express-validator';
 import { tryCatch } from '~/utils/response';
 
@@ -21,16 +15,8 @@ export enum Methods {
 interface IRoute {
   path: string;
   method: Methods;
-  handler: (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => void | Promise<void>;
-  localMiddleware?: ((
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => void)[];
+  handler: (req: Request, res: Response, next: NextFunction) => void | Promise<void>;
+  localMiddleware?: ((req: Request, res: Response, next: NextFunction) => void)[];
   validation?: ValidationChain[];
   pararms?: Record<any, any>;
 }
@@ -53,9 +39,7 @@ export default abstract class Controller {
         for (const mw of route.localMiddleware) {
           this.router.use(route.path, mw);
         }
-      const validateList = route.validation
-        ? route.validation
-        : () => console.log();
+      const validateList = route.validation ? route.validation : () => console.log();
       switch (route.method) {
         case 'GET':
           this.router.get(route.path, validateList, tryCatch(route.handler));

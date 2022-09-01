@@ -7,29 +7,34 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model tokens {
-    id              Int       @id @default(autoincrement())
-    user_id         Int
-    token_enabledId String?   @db.VarChar(255)
-    token_type      String?   @db.VarChar(255)
-    status          String?   @db.VarChar(255)
-    expiresAt       DateTime  @db.DateTime(0)
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
-    deletedAt       DateTime? @db.DateTime(0)
-    user            users     @relation(fields: [user_id], references: [user_id])
+model refresh_token {
+    id               Int            @id @default(autoincrement())
+    user_id          Int
+    refresh_token_id String         @db.VarChar(255)
+    token_type       refresh_status @default(active)
+    status           String?        @db.VarChar(30)
+    expiresAt        DateTime?      @db.DateTime(0)
+    createdAt        DateTime       @default(now())
+    updatedAt        DateTime       @updatedAt
+    deletedAt        DateTime?      @db.DateTime(0)
+    user             user           @relation(fields: [user_id], references: [user_id])
 }
 
-model users {
-    user_id   Int          @id @default(autoincrement())
-    status    users_status @default(active)
-    username  String       @unique @db.VarChar(255)
-    email     String       @db.VarChar(255)
-    password  String       @db.VarChar(255)
-    createdAt DateTime     @default(now())
-    updatedAt DateTime     @updatedAt
-    deletedAt DateTime?    @db.DateTime(0)
-    tokens    tokens[]
+enum refresh_status {
+    active
+    disabled
+}
+
+model user {
+    user_id   Int             @id @default(autoincrement())
+    status    users_status    @default(active)
+    username  String          @db.VarChar(50)
+    email     String          @unique @db.VarChar(50)
+    password  String          @db.VarChar(100)
+    createdAt DateTime        @default(now())
+    updatedAt DateTime        @updatedAt
+    deletedAt DateTime?       @db.DateTime(0)
+    tokens    refresh_token[]
 }
 
 enum users_status {

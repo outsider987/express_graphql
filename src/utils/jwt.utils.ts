@@ -13,9 +13,7 @@ export function generateToken() {
     accessTypes: ['getTeams', 'addTeams', 'updateTeams', 'deleteTeams'],
   };
   // read private key value
-  const privateKey = fs.readFileSync(
-    path.join(__dirname, './../../../private.key')
-  );
+  const privateKey = fs.readFileSync(path.join(__dirname, './../../../private.key'));
 
   const signInOptions: SignOptions = {
     // RS256 uses a public/private key pair. The API provides the private key

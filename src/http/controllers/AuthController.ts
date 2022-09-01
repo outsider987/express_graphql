@@ -28,8 +28,8 @@ class AuthController extends Controller {
   async Register(req: Request, res: Response) {
     const authService = new AuthService();
     const dates = await authService.register(req);
-    
-    await res.send( dates);
+
+    await res.send(dates);
   }
 }
 

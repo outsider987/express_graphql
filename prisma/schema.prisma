@@ -12,7 +12,6 @@ model refresh_token {
     user_id          Int
     refresh_token_id String         @db.VarChar(255)
     token_type       refresh_status @default(active)
-    status           String?        @db.VarChar(30)
     expiresAt        DateTime?      @db.DateTime(0)
     createdAt        DateTime       @default(now())
     updatedAt        DateTime       @updatedAt

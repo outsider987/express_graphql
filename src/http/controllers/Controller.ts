@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Response, Request, NextFunction, Router, RequestHandler } from 'express';
 import { ValidationChain } from 'express-validator';
-import { tryCatch } from '~/utils/response';
+import { tryCatch } from '~/http/utils/response';
 
 // HTTP methods
 export enum Methods {

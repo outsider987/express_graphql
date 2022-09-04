@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Application, RequestHandler } from 'express';
+import { Application, RequestHandler ,ErrorRequestHandler} from 'express';
 import Controller from '~/http/controllers/Controller';
 import http from 'http';
 
@@ -19,6 +19,13 @@ class Server {
   }
 
   public loadMiddleware(middleware: Array<RequestHandler>): void {
+    // global stuff like cors, body-parser, etc
+    middleware.forEach((mw) => {
+      this.app.use(mw);
+    });
+  }
+
+  public loadErrorMiddleware(middleware: Array<ErrorRequestHandler>): void {
     // global stuff like cors, body-parser, etc
     middleware.forEach((mw) => {
       this.app.use(mw);

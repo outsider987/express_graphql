@@ -1,10 +1,11 @@
-import express, { json, RequestHandler, urlencoded } from 'express';
+import express, { json, RequestHandler, urlencoded,ErrorRequestHandler } from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import Server from './http/services/server';
 import controllers from './http/controllers';
 import bodyParser from 'body-parser';
+import  injectRespondMethod  from './http/middlewares/response';
 const prisma = new PrismaClient();
 
 const corsOptions = {
@@ -21,13 +22,17 @@ const globalMiddleware: Array<RequestHandler> = [
   urlencoded({ extended: false }),
   bodyParser.json(),
   cors(corsOptions),
-  // ...
 ];
+const globalMiddlewareError: Array<ErrorRequestHandler> = [
+    injectRespondMethod
+  ];
+
 
 Promise.resolve()
   .then(() => server.initDatabase())
   .then(() => {
     server.loadMiddleware(globalMiddleware);
     server.loadControllers(controllers);
+    server.loadErrorMiddleware(globalMiddlewareError)
     server.run();
   });

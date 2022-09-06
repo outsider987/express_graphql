@@ -5,7 +5,8 @@ import { PrismaClient } from '@prisma/client';
 import Server from './http/services/server';
 import controllers from './http/controllers';
 import bodyParser from 'body-parser';
-import  injectRespondMethod  from './http/middlewares/response';
+import  exceptionHandler  from './http/middlewares/exceptions';
+
 const prisma = new PrismaClient();
 
 const corsOptions = {
@@ -24,7 +25,7 @@ const globalMiddleware: Array<RequestHandler> = [
   cors(corsOptions),
 ];
 const globalMiddlewareError: Array<ErrorRequestHandler> = [
-    injectRespondMethod
+    exceptionHandler
   ];
 
 

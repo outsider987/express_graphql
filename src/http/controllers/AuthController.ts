@@ -3,6 +3,7 @@ import AuthService from '../services/auth';
 import Controller, { Methods } from './Controller';
 import { prisma, Prisma, user } from '@prisma/client';
 import { body } from 'express-validator';
+import { toResponse } from '../utils/response';
 
 // modal.
 class AuthController extends Controller {
@@ -25,11 +26,11 @@ class AuthController extends Controller {
       },
     ];
   }
-  async Register(req: Request, res: Response) {
-    const authService = new AuthService();
-    const dates = await authService.register(req);
+  async Register(req: Request, res: Response) {   
+        const authService = new AuthService();
+        const datas = await authService.register(req) ;
+        res.json(toResponse(datas))    
 
-    await res.json(dates);
   }
 }
 

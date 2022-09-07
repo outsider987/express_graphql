@@ -16,13 +16,13 @@ class AuthService extends BaseService {
       { username: username, email: email } as user,
       '0'
     );
-    
+
     console.log('finished JWT sign ');
 
     const user = await this.prisma.user.create({
       data: { username, password: hashPassword, email },
     });
-    const token =await this.prisma.refresh_token.create({
+    const token = await this.prisma.refresh_token.create({
       data: {
         user_id: user.user_id,
         refresh_token_id: refreshToken,

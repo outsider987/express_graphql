@@ -1,7 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { Response, Request, NextFunction, Router, RequestHandler } from 'express';
-import { ValidationChain } from 'express-validator';
+import { body, check, ValidationChain, validationResult } from 'express-validator';
 import { tryCatch } from '~/http/utils/response';
+import ValidatorException from '../exceptions/ValidatorException';
 
 // HTTP methods
 export enum Methods {
@@ -40,25 +41,40 @@ export default abstract class Controller {
           this.router.use(route.path, mw);
         }
       const validateList = route.validation ? route.validation : () => console.log();
-      switch (route.method) {
-        case 'GET':
-          this.router.get(route.path, validateList, tryCatch(route.handler, this.path+route.path));
-          break;
-        case 'POST':
-          this.router.post(route.path, validateList, tryCatch(route.handler, this.path+route.path));
-          break;
-        case 'PUT':
-          this.router.put(route.path, validateList, tryCatch(route.handler, this.path+route.path));
-          break;
-        case 'DELETE':
-          this.router.delete(
-            route.path,
-            validateList,
-            tryCatch(route.handler, route.path)
-          );
-          break;
-        default:
-        // Throw exception
+
+      if (route.validation) {
+        switch (route.method) {
+          case 'GET':
+            this.router.get(
+              route.path,
+              validateList,
+              tryCatch(route.handler, this.path + route.path)
+            );
+            break;
+          case 'POST':
+            this.router.post(
+              route.path,
+              ...route.validation,
+              tryCatch(route.handler, this.path + route.path)
+            );
+            break;
+          case 'PUT':
+            this.router.put(
+              route.path,
+              validateList,
+              tryCatch(route.handler, this.path + route.path)
+            );
+            break;
+          case 'DELETE':
+            this.router.delete(
+              route.path,
+              validateList,
+              tryCatch(route.handler, route.path)
+            );
+            break;
+          default:
+          // Throw exception
+        }
       }
     }
     // Return router instance (will be usable in Server class)

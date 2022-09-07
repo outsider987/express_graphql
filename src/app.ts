@@ -1,11 +1,11 @@
-import express, { json, RequestHandler, urlencoded,ErrorRequestHandler } from 'express';
+import express, { json, RequestHandler, urlencoded, ErrorRequestHandler } from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import Server from './http/services/server';
 import controllers from './http/controllers';
 import bodyParser from 'body-parser';
-import  exceptionHandler  from './http/middlewares/exceptions';
+import exceptionHandler from './http/middlewares/exceptions';
 
 const prisma = new PrismaClient();
 
@@ -21,19 +21,16 @@ const server = new Server(app, prisma, port);
 
 const globalMiddleware: Array<RequestHandler> = [
   urlencoded({ extended: false }),
-  bodyParser.json(),
+  express.json(),
   cors(corsOptions),
 ];
-const globalMiddlewareError: Array<ErrorRequestHandler> = [
-    exceptionHandler
-  ];
-
+const globalMiddlewareError: Array<ErrorRequestHandler> = [exceptionHandler];
 
 Promise.resolve()
   .then(() => server.initDatabase())
   .then(() => {
     server.loadMiddleware(globalMiddleware);
     server.loadControllers(controllers);
-    server.loadErrorMiddleware(globalMiddlewareError)
+    server.loadErrorMiddleware(globalMiddlewareError);
     server.run();
   });

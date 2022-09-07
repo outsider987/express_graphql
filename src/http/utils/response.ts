@@ -1,29 +1,34 @@
 import { Response, Request, NextFunction, Router, RequestHandler } from 'express';
+import { validationResult } from 'express-validator';
 import logger from 'node-color-log';
 import path from 'path';
+import ValidatorException from '../exceptions/ValidatorException';
 
 interface Json {
-    status?: number;
-    data?: any[];
-  }
-  interface MyResponseLocals {
-    userId: string;
-  }
-  interface MyResponseBody {
-    status: string;
-    data:{}
-  }
-  
-  type Send<T = Response> = (body?: Json) => T;
-  
-  interface CustomResponse extends Response {
-    json: Send<this>;
-  }
+  status?: number;
+  data?: any[];
+}
+interface MyResponseLocals {
+  userId: string;
+}
+interface MyResponseBody {
+  status: string;
+  data: {};
+}
+
+type Send<T = Response> = (body?: Json) => T;
+
+interface CustomResponse extends Response {
+  json: Send<this>;
+}
 export const tryCatch =
   (handleRequest: RequestHandler, path: string) =>
-  async (req: Request, res: Response<MyResponseBody, MyResponseLocals> , next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
+      const errors = validationResult(req);
+      console.log(errors);
+      if (!errors.isEmpty()) throw ValidatorException.bodyCheck(errors);
+
       logger
         .bold()
         .bgColor('green')
@@ -31,7 +36,7 @@ export const tryCatch =
       console.time('api Time');
 
       await handleRequest(req, res, next);
-      
+
       console.timeEnd('api Time');
       logger.bold().bgColor('green').info('end count');
 
@@ -41,15 +46,16 @@ export const tryCatch =
       logger
         .bold()
         .bgColor('red')
-        .error(`${__dirname} \n api path: ${JSON.stringify(path)} \n ${JSON.stringify(error)}`);
+        .error(
+          `${__dirname} \n api path: ${JSON.stringify(path)} \n ${JSON.stringify(error)}`
+        );
 
       await next(error);
     }
   };
 
 export const toResponse = (data = {}) => ({
-  status: 1,
+  status: true,
+  message: 'sucess',
   data,
 });
-
-

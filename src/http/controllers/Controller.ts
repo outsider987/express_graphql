@@ -3,6 +3,7 @@ import { Response, Request, NextFunction, Router, RequestHandler } from 'express
 import { body, check, ValidationChain, validationResult } from 'express-validator';
 import { tryCatch } from '~/http/utils/response';
 import ValidatorException from '../exceptions/ValidatorException';
+import { TypedRequestBody } from '../utils/request';
 
 // HTTP methods
 export enum Methods {
@@ -17,7 +18,11 @@ interface IRoute {
   path: string;
   method: Methods;
   handler: (req: Request, res: Response, next: NextFunction) => void | Promise<void>;
-  localMiddleware?: ((req: Request, res: Response, next: NextFunction) => void)[];
+  localMiddleware?: ((
+    req: TypedRequestBody<any>,
+    res: Response,
+    next: NextFunction
+  ) => void | Promise<void>)[];
   validation?: ValidationChain[];
   pararms?: Record<any, any>;
 }

@@ -21,6 +21,7 @@ type Send<T = Response> = (body?: Json) => T;
 interface CustomResponse extends Response {
   json: Send<this>;
 }
+
 export const tryCatch =
   (handleRequest: RequestHandler, path: string) =>
   async (req: Request, res: Response, next: NextFunction) => {

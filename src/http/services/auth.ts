@@ -1,8 +1,10 @@
+import { TypedRequestBody } from './../utils/request';
 import { Request, Response } from 'express';
 import BaseService from './baseService';
-import jwt from 'jsonwebtoken';
 import { user } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import { generateJWTToken } from '../utils/jwt';
+import AuthException from '../exceptions/AuthException';
 
 class AuthService extends BaseService {
   async register(res: Request) {
@@ -11,20 +13,46 @@ class AuthService extends BaseService {
 
     console.log('start JWT sign ');
 
-    const accessToken = await generateAccessToken({ username: username, email: email });
-    const refreshToken = await jwt.sign(
-      { username: username, email: email } as user,
-      '0'
-    );
-
     console.log('finished JWT sign ');
 
     const user = await this.prisma.user.create({
       data: { username, password: hashPassword, email },
     });
+    return this.passwordGrant(email, password);
+  }
+
+  async login(res: Request) {
+    const { password, email } = res.body as user;
+    return await this.passwordGrant(email, password);
+  }
+
+  async refresh(res: TypedRequestBody<any>) {
+    const { email, user_id } = res.auth as user;
+    if (!email || !user_id) throw AuthException.tokenNotExist({ email, user_id });
+
+    return await this.refreshTokensGrant(email, user_id);
+  }
+  async refreshTokensGrant(email: string, user_id: number) {
+    const data = await this.prisma.user.findFirst({ where: { email, user_id } });
+    if (!data) throw AuthException.loginNoUser(data);
+
+    return await this.createTokens(data.username, data.email, data.user_id);
+  }
+
+  async passwordGrant(email: string, password: string) {
+    const data = await this.prisma.user.findFirst({ where: { email, password } });
+    if (!data) throw AuthException.loginNoUser(data);
+
+    return  this.createTokens(data.username, data.email, data.user_id);
+  }
+
+  async createTokens(username: string, email: string, user_id: number) {
+    const accessToken = generateJWTToken({ username: username, email: email });
+    const refreshToken = generateJWTToken({ username, email, user_id }, '2h');
+
     const token = await this.prisma.refresh_token.create({
       data: {
-        user_id: user.user_id,
+        user_id,
         refresh_token_id: refreshToken,
       },
     });
@@ -34,6 +62,3 @@ class AuthService extends BaseService {
   }
 }
 export default AuthService;
-function generateAccessToken(user: any) {
-  return jwt.sign(user, '1', { expiresIn: '1hr' });
-}

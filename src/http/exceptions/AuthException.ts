@@ -10,4 +10,13 @@ export default class AuthException extends Exception {
   static register = (error: any) => {
     return new AuthException('register error', error, 'E-0001');
   };
+  static tokenNotExist = (error: any) => {
+    return new AuthException('register error', error, 'E-0002');
+  };
+  static tokenNotAuthorized = (error: any) => {
+    return new AuthException('token not authorized', error, 'E-0003');
+  };
+  static loginNoUser = (error: any) => {
+    return new AuthException('login no User', error, 'E-0004');
+  };
 }

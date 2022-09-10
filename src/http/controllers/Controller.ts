@@ -47,7 +47,7 @@ export default abstract class Controller {
         }
       const validateList = route.validation ? route.validation : () => console.log();
 
-      if (route.validation) {
+  
         switch (route.method) {
           case 'GET':
             this.router.get(
@@ -59,7 +59,7 @@ export default abstract class Controller {
           case 'POST':
             this.router.post(
               route.path,
-              ...route.validation,
+              validateList,
               tryCatch(route.handler, this.path + route.path)
             );
             break;
@@ -80,7 +80,7 @@ export default abstract class Controller {
           default:
           // Throw exception
         }
-      }
+      
     }
     // Return router instance (will be usable in Server class)
     return this.router;

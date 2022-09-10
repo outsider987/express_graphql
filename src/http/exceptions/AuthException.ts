@@ -19,4 +19,11 @@ export default class AuthException extends Exception {
   static loginNoUser = (error: any) => {
     return new AuthException('login no User', error, 'E-0004');
   };
+  static loginWrongPassword = (error: any) => {
+    return new AuthException('wrong password', error, 'E-0005');
+  };
+  static createTokenFailed = (error: any) => {
+    return new AuthException('create token failed', error, 'E-0006');
+  };
+  
 }

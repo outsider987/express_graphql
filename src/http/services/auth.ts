@@ -43,11 +43,11 @@ class AuthService extends BaseService {
     // const password = bcrypt.compare(password_i)
     const data = await this.prisma.user.findFirst({ where: { email } });
     if (!data) throw AuthException.loginNoUser(data);
-    
-    if(await !bcrypt.compare(data?.password,password))
-        throw AuthException.loginNoUser(data);
 
-    return  this.createTokens(data.username, data.email, data.user_id);
+    if (await !bcrypt.compare(data?.password, password))
+      throw AuthException.loginNoUser(data);
+
+    return this.createTokens(data.username, data.email, data.user_id);
   }
 
   async createTokens(username: string, email: string, user_id: number) {
@@ -60,8 +60,7 @@ class AuthService extends BaseService {
         refresh_token_id: refreshToken,
       },
     });
-    if(!token)
-        AuthException.createTokenFailed(token);
+    if (!token) AuthException.createTokenFailed(token);
 
     console.log(token);
     return { accessToken, refreshToken };

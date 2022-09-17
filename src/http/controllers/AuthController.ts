@@ -26,15 +26,18 @@ class AuthController extends Controller {
         path: '/login',
         method: Methods.POST,
         handler: this.Login,
-        validation: [
-           
-          ],
       },
       {
         path: '/refresh',
         method: Methods.POST,
         handler: this.Refresh,
-        localMiddleware:[handleAuth]
+        localMiddleware: [handleAuth],
+      },
+      {
+        path: '/test',
+        method: Methods.POST,
+        handler: this.Refresh,
+        localMiddleware: [handleAuth],
       },
     ];
   }

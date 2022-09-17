@@ -44,7 +44,7 @@
     "swagger-autogen": "node ./swagger.js",
     "codegen": "graphql-code-generator --config codegen.yml",
     "generate": "graphql-codegen",
-    "lint": "npx prettier  src/**/*.ts --write && eslint --fix src/**/*.ts "
+    "lint": "npx prettier  src/**/*.ts --write && npx prettier  src/**/**/*.ts --write  && eslint --fix src/**/*.ts "
   },
   "repository": {
     "type": "git",

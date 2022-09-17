@@ -47,40 +47,38 @@ export default abstract class Controller {
         }
       const validateList = route.validation ? route.validation : () => console.log();
 
-  
-        switch (route.method) {
-          case 'GET':
-            this.router.get(
-              route.path,
-              validateList,
-              tryCatch(route.handler, this.path + route.path)
-            );
-            break;
-          case 'POST':
-            this.router.post(
-              route.path,
-              validateList,
-              tryCatch(route.handler, this.path + route.path)
-            );
-            break;
-          case 'PUT':
-            this.router.put(
-              route.path,
-              validateList,
-              tryCatch(route.handler, this.path + route.path)
-            );
-            break;
-          case 'DELETE':
-            this.router.delete(
-              route.path,
-              validateList,
-              tryCatch(route.handler, route.path)
-            );
-            break;
-          default:
-          // Throw exception
-        }
-      
+      switch (route.method) {
+        case 'GET':
+          this.router.get(
+            route.path,
+            validateList,
+            tryCatch(route.handler, this.path + route.path)
+          );
+          break;
+        case 'POST':
+          this.router.post(
+            route.path,
+            validateList,
+            tryCatch(route.handler, this.path + route.path)
+          );
+          break;
+        case 'PUT':
+          this.router.put(
+            route.path,
+            validateList,
+            tryCatch(route.handler, this.path + route.path)
+          );
+          break;
+        case 'DELETE':
+          this.router.delete(
+            route.path,
+            validateList,
+            tryCatch(route.handler, route.path)
+          );
+          break;
+        default:
+        // Throw exception
+      }
     }
     // Return router instance (will be usable in Server class)
     return this.router;

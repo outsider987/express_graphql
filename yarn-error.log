@@ -1,0 +1,91 @@
+Arguments: 
+  /Users/victor/.nvm/versions/node/v14.19.1/bin/node /opt/homebrew/Cellar/yarn/1.22.17_2/libexec/bin/yarn.js
+
+PATH: 
+  /opt/homebrew/opt/php@7.3/sbin:/opt/homebrew/opt/php@7.3/bin:/Users/victor/.nvm/versions/node/v14.19.1/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/opt/homebrew/opt/php@7.3/sbin:/opt/homebrew/opt/php@7.3/bin:/Users/victor/.nvm/versions/node/v14.19.1/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  14.19.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: getaddrinfo ENOTFOUND registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:71:26)
+
+npm manifest: 
+  {
+    "name": "express_graphql",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.ts",
+    "devDependencies": {
+      "@graphql-codegen/cli": "^2.11.8",
+      "@graphql-codegen/typescript-operations": "^2.5.3",
+      "@graphql-codegen/typescript-resolvers": "^2.7.3",
+      "@graphql-typed-document-node/core": "^3.1.1",
+      "@prisma/client": "^4.1.1",
+      "@types/bcrypt": "^5.0.0",
+      "@types/express": "^4.17.13",
+      "@types/jsonwebtoken": "^8.5.9",
+      "@types/node": "^18.0.6",
+      "@typescript-eslint/eslint-plugin": "^5.35.1",
+      "@typescript-eslint/parser": "^5.35.1",
+      "apollo-server-core": "^3.10.0",
+      "apollo-server-express": "^3.10.0",
+      "bcrypt": "^5.0.1",
+      "dotenv": "^16.0.1",
+      "eslint": ">=5.16.0",
+      "eslint-config-google": "^0.14.0",
+      "express": "^4.18.1",
+      "graphql": "^16.6.0",
+      "graphql-codegen": "^0.4.0",
+      "jsonwebtoken": "^8.5.1",
+      "node-color-log": "^10.0.2",
+      "nodemon": "^2.0.19",
+      "path": "^0.12.7",
+      "prettier": "^2.6.2",
+      "prisma": "^4.0",
+      "prismix": "^1.0.21",
+      "ts-node": "^10.9.1",
+      "tsconfig-paths": "^4.1.0",
+      "typescript": "^4.7.4"
+    },
+    "scripts": {
+      "prismix": "npx prismix && prisma format",
+      "pre-env": "npm i -D tsconfig-paths",
+      "dev": "prisma generate && nodemon  src/app.ts --watch ",
+      "start": " tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/index.js  -p $PORT",
+      "deploy": "git add . && git commit -m Heroku && git push ",
+      "swagger-autogen": "node ./swagger.js",
+      "codegen": "graphql-code-generator --config codegen.yml",
+      "generate": "graphql-codegen",
+      "lint": "npx prettier  src/**/*.ts --write && eslint --fix src/**/*.ts "
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/outsider987/express_graphql.git"
+    },
+    "author": "Victor",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/outsider987/express_graphql/issues"
+    },
+    "homepage": "https://github.com/outsider987/express_graphql#readme",
+    "dependencies": {
+      "@types/ramda": "^0.28.15",
+      "express-validator": "^6.14.2",
+      "ramda": "^0.28.0",
+      "swagger-autogen": "^2.21.5"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

@@ -25,5 +25,4 @@ export default class AuthException extends Exception {
   static createTokenFailed = (error: any) => {
     return new AuthException('create token failed', error, 'E-0006');
   };
-  
 }

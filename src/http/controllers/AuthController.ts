@@ -1,3 +1,4 @@
+import { TypedRequestBody } from './../utils/request';
 import { IRoute, Request, Response } from 'express';
 import AuthService from '../services/auth';
 import Controller, { Methods } from './Controller';
@@ -35,8 +36,8 @@ class AuthController extends Controller {
       },
       {
         path: '/test',
-        method: Methods.POST,
-        handler: this.Refresh,
+        method: Methods.GET,
+        handler: this.Test,
         localMiddleware: [handleAuth],
       },
     ];
@@ -53,10 +54,15 @@ class AuthController extends Controller {
     res.json(toResponse(datas));
   }
 
-  async Refresh(req: Request, res: Response) {
+  async Refresh(req: TypedRequestBody<any>, res: Response) {
     const authService = new AuthService();
-    const datas = await authService.login(req);
+    const datas = await authService.refresh(req);
     res.json(toResponse(datas));
+  }
+
+  async Test(req: TypedRequestBody<any>, res: Response) {
+    
+    res.json(toResponse(req.auth));
   }
 }
 

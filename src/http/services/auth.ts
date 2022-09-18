@@ -27,7 +27,9 @@ class AuthService extends BaseService {
   }
 
   async refresh(res: TypedRequestBody<any>) {
+    console.log(res.auth);
     const { email, user_id } = res.auth as user;
+
     if (!email || !user_id) throw AuthException.tokenNotExist({ email, user_id });
 
     return await this.refreshTokensGrant(email, user_id);

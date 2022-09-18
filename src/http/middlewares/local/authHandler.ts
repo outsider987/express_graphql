@@ -13,28 +13,30 @@ export const handleAuth = async (
 ) => {
   try {
     const token = req.header('authorization')?.replace('Bearer ', '');
-
+  
     if (!token) {
       throw AuthException.tokenNotExist(token);
     }
-    const tokenDatas = await prisma.refresh_token.findFirst({
-      where: { refresh_token_id: token },
-    });
-    if (!tokenDatas) {
-      throw AuthException.tokenNotExist(token);
-    }
-
+    // const tokenDatas = await prisma.refresh_token.findFirst({
+    //   where: { refresh_token_id: token },
+    // });
+    // console.log(tokenDatas);
+    // if (!tokenDatas) {
+    //   throw AuthException.tokenNotExist(token);
+    // }
+    
     const auth = jwt.verify(token, process.env.JWT_SECRECT as string);
-
+    
     if (!auth) {
+        // res.status(401);
       throw AuthException.tokenNotAuthorized(auth);
     } else {
       req.auth = auth;
       next();
     }
-  } catch {
+  } catch (error) {
     res.status(401).json({
-      error: new Error('Invalid request!'),
+      error: error,
     });
   }
 };

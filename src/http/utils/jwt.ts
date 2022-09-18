@@ -3,7 +3,7 @@ require('dotenv').config();
 /**
  * generates JWT used for local testing
  */
-export function generateJWTToken(payload: any, expiresIn: string = '1h') {
+export function generateJWTToken(payload: any, expiresIn: string = '30s') {
   // read private key value
   const privateKey = process.env.JWT_SECRECT as string | '0';
 
@@ -14,7 +14,6 @@ export function generateJWTToken(payload: any, expiresIn: string = '1h') {
   // generate JWT
   return sign(payload, privateKey, signInOptions);
 }
-export function test() {}
 
 // export function validateToken(token: string): Promise<TokenPayload> {
 //     const publicKey = fs.readFileSync(path.join(__dirname, './../../../public.key'));

@@ -22,7 +22,6 @@ const injectRespondMethod = async (
     customError = new PrismaException('Prisma Excepetion', err);
     await res.send(customError);
   }
-
   await res.send(customError);
 
   next();

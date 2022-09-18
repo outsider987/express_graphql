@@ -45,7 +45,7 @@ export default abstract class Controller {
         for (const mw of route.localMiddleware) {
           this.router.use(route.path, mw);
         }
-      const validateList = route.validation ? route.validation : () => console.log();
+      const validateList = route.validation ? route.validation : [];
 
       switch (route.method) {
         case 'GET':

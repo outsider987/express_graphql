@@ -13,7 +13,7 @@ export const handleAuth = async (
 ) => {
   try {
     const token = req.header('authorization')?.replace('Bearer ', '');
-  
+
     if (!token) {
       throw AuthException.tokenNotExist(token);
     }
@@ -24,13 +24,14 @@ export const handleAuth = async (
     // if (!tokenDatas) {
     //   throw AuthException.tokenNotExist(token);
     // }
-    
+
     const auth = jwt.verify(token, process.env.JWT_SECRECT as string);
-    
+
     if (!auth) {
-        // res.status(401);
+      // res.status(401);
       throw AuthException.tokenNotAuthorized(auth);
     } else {
+      auth['token'] = token;
       req.auth = auth;
       next();
     }

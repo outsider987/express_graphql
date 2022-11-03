@@ -61,7 +61,6 @@ class AuthController extends Controller {
   }
 
   async Test(req: TypedRequestBody<any>, res: Response) {
-    
     res.json(toResponse(req.auth));
   }
 }

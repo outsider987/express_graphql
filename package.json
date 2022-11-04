@@ -18,7 +18,7 @@
     "apollo-server-core": "^3.10.0",
     "apollo-server-express": "^3.10.0",
     "bcrypt": "^5.0.1",
-    "dotenv": "^16.0.1",
+    
     "eslint": ">=5.16.0",
     "eslint-config-google": "^0.14.0",
     "express": "^4.18.1",
@@ -30,7 +30,6 @@
     "path": "^0.12.7",
     "prettier": "^2.6.2",
     "prisma": "^4.0",
-    "prismix": "^1.0.21",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
     "typescript": "^4.7.4"
@@ -38,8 +37,9 @@
   "scripts": {
     "prismix": "npx prismix && prisma format",
     "pre-env": "npm i -D tsconfig-paths",
+    "prismix-g": "prisma generate ",
     "dev": "prisma generate && nodemon  src/app.ts --watch ",
-    "start": " tsc && node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/index.js  -p $PORT",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/app.js  ",
     "deploy": "git add . && git commit -m Heroku && git push ",
     "swagger-autogen": "node ./swagger.js",
     "codegen": "graphql-code-generator --config codegen.yml",

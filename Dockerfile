@@ -1,33 +1,31 @@
-FROM debian:bullseye as builder
 
-ARG NODE_VERSION=14.18.2
-ARG YARN_VERSION=1.22.17
 
-RUN apt-get update; apt install -y curl
-RUN curl https://get.volta.sh | bash
-ENV VOLTA_HOME /root/.volta
-ENV PATH /root/.volta/bin:$PATH
-RUN volta install node@${NODE_VERSION} yarn@${YARN_VERSION}
+FROM node:18.8-alpine  as builder
 
-#######################################################################
-
-RUN mkdir /app
 WORKDIR /app
+COPY package*.json ./
+COPY prisma ./prisma/
+COPY tsconfig.json ./
+COPY ./src ./src
+
+RUN npm i -g prisma;
+RUN npm i ;
+RUN npm i -D tsconfig-paths
+RUN node -r ts-node/register/transpile-only -r tsconfig-paths/register
+RUN npx prisma generate
+
+RUN npx tsc
+
+FROM node:18.8-alpine
 
 ENV NODE_ENV production
-
-COPY . .
-
-RUN yarn install
-FROM debian:bullseye
-
 LABEL fly_launch_runtime="nodejs"
-
-COPY --from=builder /root/.volta /root/.volta
-COPY --from=builder /app /app
-
 WORKDIR /app
-ENV NODE_ENV production
-ENV PATH /root/.volta/bin:$PATH
 
-CMD [ "yarn", "run", "start" ]
+COPY package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+COPY . .
+EXPOSE 4000
+CMD ["npm", "run", "start"]

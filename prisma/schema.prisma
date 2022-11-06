@@ -4,14 +4,14 @@ generator client {
 
 datasource db {
     provider = "mysql"
-    url      = env("mysql://b1461d8f86e65c:2e444d21@us-cdbr-east-06.cleardb.net:3306/heroku_54c781c8b3feb6a?schema=public")
+    url      = env("DATABASE_URL")
 }
 
 model refresh_token {
     id               Int            @id @default(autoincrement())
-    user_id          Int
+    user_id          Int            @unique
     refresh_token_id String         @db.VarChar(255)
-    token_type       refresh_status @default(active)
+    token_status     refresh_status @default(active)
     expiresAt        DateTime?      @db.DateTime(0)
     createdAt        DateTime       @default(now())
     updatedAt        DateTime       @updatedAt

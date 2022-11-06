@@ -4,6 +4,7 @@ import logger from 'node-color-log';
 import AuthException from '../exceptions/AuthException';
 import ExceptionError from '../exceptions/base';
 import PrismaException from '../exceptions/PrismaException';
+import { failedResponse } from '../utils/response';
 
 const injectRespondMethod = async (
   err: TypeError,
@@ -15,14 +16,12 @@ const injectRespondMethod = async (
 
   if (err instanceof TypeError) {
     customError = new ExceptionError('type error', err);
-    await res.send(customError);
   }
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     customError = new PrismaException('Prisma Excepetion', err);
-    await res.send(customError);
   }
-  await res.send(customError);
+  await failedResponse(res,404,customError)
 
   next();
 };

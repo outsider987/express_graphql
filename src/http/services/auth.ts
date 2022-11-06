@@ -11,13 +11,10 @@ class AuthService extends BaseService {
     const { password, username, email } = res.body as user;
     const hashPassword = await bcrypt.hash(password, 15);
 
-    console.log('start JWT sign ');
-
-    console.log('finished JWT sign ');
-
     const user = await this.prisma.user.create({
       data: { username, password: hashPassword, email },
     });
+
     return this.passwordGrant(email, password);
   }
 
@@ -27,14 +24,10 @@ class AuthService extends BaseService {
   }
 
   async refresh(res: TypedRequestBody<any>) {
-    console.log(res.auth);
     const { email, user_id } = res.auth as user;
 
     if (!email || !user_id) throw AuthException.tokenNotExist({ email, user_id });
 
-    return await this.refreshTokensGrant(email, user_id);
-  }
-  async refreshTokensGrant(email: string, user_id: number) {
     const data = await this.prisma.user.findFirst({ where: { email, user_id } });
     if (!data) throw AuthException.loginNoUser(data);
 
@@ -56,15 +49,26 @@ class AuthService extends BaseService {
     const accessToken = generateJWTToken({ username: username, email: email });
     const refreshToken = generateJWTToken({ username, email, user_id }, '2h');
 
-    const token = await this.prisma.refresh_token.create({
-      data: {
-        user_id,
-        refresh_token_id: refreshToken,
-      },
-    });
-    if (!token) AuthException.createTokenFailed(token);
+    const refershData = await this.prisma.refresh_token.findFirst({ where: { user_id } });
 
-    console.log(token);
+    console.log('start JWT sign ');
+    if (refershData) {
+      this.prisma.refresh_token.update({
+        where: { id: refershData?.id },
+        data: {
+          refresh_token_id: refreshToken,
+        },
+      });
+    } else {
+      const token = await this.prisma.refresh_token.create({
+        data: {
+          user_id,
+          refresh_token_id: refreshToken,
+        },
+      });
+      if (!token) AuthException.createTokenFailed(token);
+    }
+    console.log('finished JWT sign ');
     return { accessToken, refreshToken };
   }
 }

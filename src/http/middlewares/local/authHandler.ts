@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { NextFunction, Response, Request } from 'express';
 import jwt from 'jsonwebtoken';
+import { failedResponse } from '~/http/utils/response';
 import AuthException from '../../exceptions/AuthException';
 import { TypedRequestBody } from '../../utils/request';
 
-const prisma = new PrismaClient();
 
 export const handleAuth = async (
   req: TypedRequestBody<any>,
@@ -17,13 +17,6 @@ export const handleAuth = async (
     if (!token) {
       throw AuthException.tokenNotExist(token);
     }
-    // const tokenDatas = await prisma.refresh_token.findFirst({
-    //   where: { refresh_token_id: token },
-    // });
-    // console.log(tokenDatas);
-    // if (!tokenDatas) {
-    //   throw AuthException.tokenNotExist(token);
-    // }
 
     const auth = jwt.verify(token, process.env.JWT_SECRECT as string);
 
@@ -36,8 +29,6 @@ export const handleAuth = async (
       next();
     }
   } catch (error) {
-    res.status(401).json({
-      error: error,
-    });
+    failedResponse(res,401,error)
   }
 };

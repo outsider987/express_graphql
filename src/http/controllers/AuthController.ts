@@ -45,23 +45,23 @@ class AuthController extends Controller {
   async Register(req: Request, res: Response) {
     const authService = new AuthService();
     const datas = await authService.register(req);
-    res.json(sucessResponse(res,datas));
+    res.json(sucessResponse(res, datas));
   }
 
   async Login(req: Request, res: Response) {
     const authService = new AuthService();
     const datas = await authService.login(req);
-    res.json(sucessResponse(res,datas));
+    res.json(sucessResponse(res, datas));
   }
 
   async Refresh(req: TypedRequestBody<any>, res: Response) {
     const authService = new AuthService();
     const datas = await authService.refresh(req);
-    res.json(sucessResponse(res,datas));
+    res.json(sucessResponse(res, datas));
   }
 
   async Test(req: TypedRequestBody<any>, res: Response) {
-    res.json(sucessResponse(res,req.auth));
+    res.json(sucessResponse(res, req.auth));
   }
 }
 

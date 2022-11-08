@@ -62,10 +62,10 @@ export const sucessResponse = (res: Response, data = {}) => {
     data,
   });
 };
-export const failedResponse = (res: Response, status: number = 404, error:any = {}) => {
+export const failedResponse = (res: Response, status: number = 404, error: any = {}) => {
   res.status(status).send({
-        status: false,
-        message: 'failed',
-        error: error,
+    status: false,
+    message: 'failed',
+    error: error,
   });
 };

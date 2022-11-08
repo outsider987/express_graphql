@@ -10,7 +10,7 @@ import exceptionHandler from './http/middlewares/exceptions';
 const prisma = new PrismaClient();
 
 const corsOptions = {
-  origin: ['http://www.example.com', 'http://localhost:8080'],
+  origin: ['https://victorprofile.fly.dev', 'http://localhost:8080'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'],
 };

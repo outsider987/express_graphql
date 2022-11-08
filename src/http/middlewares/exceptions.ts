@@ -21,7 +21,7 @@ const injectRespondMethod = async (
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     customError = new PrismaException('Prisma Excepetion', err);
   }
-  await failedResponse(res,404,customError)
+  await failedResponse(res, 404, customError);
 
   next();
 };

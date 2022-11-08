@@ -29,6 +29,7 @@ export const handleAuth = async (
       next();
     }
   } catch (error) {
+    
     failedResponse(res,401,error)
   }
 };

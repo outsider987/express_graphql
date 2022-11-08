@@ -13,7 +13,7 @@ const injectRespondMethod = async (
   next: NextFunction
 ) => {
   let customError = err;
-
+try {
   if (err instanceof TypeError) {
     customError = new ExceptionError('type error', err);
   }
@@ -24,5 +24,16 @@ const injectRespondMethod = async (
   await failedResponse(res, 404, customError);
 
   next();
+  
+} catch (error) {
+  logger
+  .bold()
+  .bgColor('red')
+  .error(
+    `${error}}`
+  );
+  next();
+}
+
 };
 export default injectRespondMethod;

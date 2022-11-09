@@ -3,6 +3,7 @@ import { validationResult } from 'express-validator';
 import logger from 'node-color-log';
 import path from 'path';
 import ValidatorException from '../exceptions/ValidatorException';
+import { apiLogger, errorLogger } from './logger';
 
 interface Json {
   status?: number;
@@ -23,33 +24,25 @@ interface CustomResponse extends Response {
 }
 
 export const tryCatch =
-  (handleRequest: RequestHandler, path: string) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+  (handleRequest: RequestHandler, path: string) => async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
       console.log(errors);
       if (!errors.isEmpty()) throw ValidatorException.bodyCheck(errors);
 
-      logger
-        .bold()
-        .bgColor('green')
-        .info(`start count ${JSON.stringify(path)} api time`);
+      apiLogger(path);
       console.time('api Time');
 
       await handleRequest(req, res, next);
 
       console.timeEnd('api Time');
-      logger.bold().bgColor('green').info('end count');
+      logger.bold().bgColor('green').success('end count');
 
       next();
     } catch (error) {
       console.timeEnd('api Time');
-      logger
-        .bold()
-        .bgColor('red')
-        .error(
-          `${__dirname} \n api path: ${JSON.stringify(path)} \n ${JSON.stringify(error)}`
-        );
+
+      errorLogger(`${__dirname} \n api path: ${JSON.stringify(path)} \n ${JSON.stringify(error)}`);
 
       await next(error);
     }

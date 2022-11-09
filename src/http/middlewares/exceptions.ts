@@ -6,34 +6,22 @@ import ExceptionError from '../exceptions/base';
 import PrismaException from '../exceptions/PrismaException';
 import { failedResponse } from '../utils/response';
 
-const injectRespondMethod = async (
-  err: TypeError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  let customError = err;
-try {
-  if (err instanceof TypeError) {
-    customError = new ExceptionError('type error', err);
-  }
+const injectRespondMethod = async (err: TypeError, req: Request, res: Response, next: NextFunction) => {
+    let customError = err;
+    try {
+        if (err instanceof TypeError) {
+            customError = new ExceptionError('type error', err);
+        }
 
-  if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    customError = new PrismaException('Prisma Excepetion', err);
-  }
-  await failedResponse(res, 404, customError);
+        if (err instanceof Prisma.PrismaClientKnownRequestError) {
+            customError = new PrismaException('Prisma Excepetion', err);
+        }
+        await failedResponse(res, customError, 404);
 
-  next();
-  
-} catch (error) {
-  logger
-  .bold()
-  .bgColor('red')
-  .error(
-    `${error}}`
-  );
-  next();
-}
-
+        next();
+    } catch (error) {
+        logger.bold().bgColor('red').error(`${error}}`);
+        next();
+    }
 };
 export default injectRespondMethod;

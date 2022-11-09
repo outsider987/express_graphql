@@ -2,7 +2,7 @@ import { IRoute, Request, Response } from 'express';
 import UserService from '../services/user';
 import { localLog } from '../utils/logger';
 import { sucessResponse } from '../utils/response';
-import Controller, { Methods } from './Controller';
+import Controller, { Methods } from './base';
 
 class UserController extends Controller {
     constructor() {

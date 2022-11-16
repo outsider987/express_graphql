@@ -30,6 +30,6 @@ export const handleAuth = async (
     }
   } catch (error) {
     
-    failedResponse(res,401,error)
+    failedResponse(res,error,401)
   }
 };

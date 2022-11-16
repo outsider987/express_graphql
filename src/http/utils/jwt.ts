@@ -3,7 +3,7 @@ require('dotenv').config();
 /**
  * generates JWT used for local testing
  */
-export function generateJWTToken(payload: any, expiresIn: string = '30s') {
+export function generateJWTToken(payload: any, expiresIn: string = '10s') {
     // read private key value
     const privateKey = process.env.JWT_SECRECT as string | '0';
 

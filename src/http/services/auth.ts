@@ -46,7 +46,7 @@ class AuthService extends BaseService {
 
     async createTokens(username: string, email: string, user_id: number) {
         const accessToken = generateJWTToken({ username: username, email: email });
-        const refreshToken = generateJWTToken({ username, email, user_id }, '2h');
+        const refreshToken = generateJWTToken({ username, email, user_id }, '20s');
 
         const refershData = await this.prisma.refresh_token.findFirst({ where: { user_id } });
 

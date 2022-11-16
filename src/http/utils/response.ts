@@ -61,4 +61,5 @@ export const failedResponse = (res: Response, error: any = {}, status: number = 
         message: 'failed',
         error: error,
     });
+    
 };

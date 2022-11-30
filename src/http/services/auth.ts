@@ -23,32 +23,31 @@ class AuthService extends BaseService {
         return await this.passwordGrant(email, password);
     }
 
-    async refresh(res: TypedRequestBody<any>) {
-        const { email, user_id } = res.auth as user;
+    async refresh(res: TypedRequestBody) {
+        const { email, user_id } = res.auth;
 
         if (!email || !user_id) throw AuthException.tokenNotExist({ email, user_id });
 
         const data = await this.prisma.user.findFirst({ where: { email, user_id } });
         if (!data) throw AuthException.loginNoUser(data);
 
-        return await this.createTokens(data.username, data.email, data.user_id);
+        return await this.createTokens({ username: data.username, email: data.email, user_id: data.user_id });
     }
 
     async passwordGrant(email: string, password: string) {
-        // const password = bcrypt.compare(password_i)
         const data = await this.prisma.user.findFirst({ where: { email } });
         if (!data) throw AuthException.loginNoUser(data);
 
         if (await !bcrypt.compare(data?.password, password)) throw AuthException.loginNoUser(data);
 
-        return this.createTokens(data.username, data.email, data.user_id);
+        return this.createTokens({ username: data.username, email: data.email, user_id: data.user_id });
     }
 
-    async createTokens(username: string, email: string, user_id: number) {
-        const accessToken = generateJWTToken({ username: username, email: email });
-        const refreshToken = generateJWTToken({ username, email, user_id }, '20s');
+    async createTokens(dto: { username: string; email: string; user_id: number }) {
+        const accessToken = generateJWTToken({ ...dto });
+        const refreshToken = generateJWTToken({ ...dto }, '20s');
 
-        const refershData = await this.prisma.refresh_token.findFirst({ where: { user_id } });
+        const refershData = await this.prisma.refresh_token.findFirst({ where: { user_id: dto.user_id } });
 
         console.log('start JWT sign ');
         if (refershData) {
@@ -61,7 +60,7 @@ class AuthService extends BaseService {
         } else {
             const token = await this.prisma.refresh_token.create({
                 data: {
-                    user_id,
+                    user_id: dto.user_id,
                     refresh_token_id: refreshToken,
                 },
             });

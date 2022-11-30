@@ -7,7 +7,6 @@ import { body } from 'express-validator';
 import { sucessResponse } from '../utils/response';
 import { handleAuth } from '../middlewares/local/authHandler';
 
-// modal.
 class AuthController extends Controller {
     constructor() {
         super();
@@ -42,6 +41,7 @@ class AuthController extends Controller {
             },
         ];
     }
+
     async Register(req: Request, res: Response) {
         const authService = new AuthService();
         const datas = await authService.register(req);
@@ -54,13 +54,13 @@ class AuthController extends Controller {
         res.json(sucessResponse(res, datas));
     }
 
-    async Refresh(req: TypedRequestBody<any>, res: Response) {
+    async Refresh(req: TypedRequestBody, res: Response) {
         const authService = new AuthService();
         const datas = await authService.refresh(req);
         sucessResponse(res, datas);
     }
 
-    async Test(req: TypedRequestBody<any>, res: Response) {
+    async Test(req: TypedRequestBody, res: Response) {
         sucessResponse(res, { sucess: true });
     }
 }

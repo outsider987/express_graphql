@@ -2,7 +2,7 @@ import express, { json, RequestHandler, urlencoded, ErrorRequestHandler } from '
 import cors from 'cors';
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
-import Server from './http/services/server';
+import Server from './http/utils/server';
 import controllers from './http/controllers';
 import bodyParser from 'body-parser';
 import exceptionHandler from './http/middlewares/exceptions';

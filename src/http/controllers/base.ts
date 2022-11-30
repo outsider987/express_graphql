@@ -18,7 +18,7 @@ interface IRoute {
     path: string;
     method: Methods;
     handler: (req: Request, res: Response, next: NextFunction) => void | Promise<void>;
-    localMiddleware?: ((req: TypedRequestBody<any>, res: Response, next: NextFunction) => void | Promise<void>)[];
+    localMiddleware?: ((req: TypedRequestBody, res: Response, next: NextFunction) => void | Promise<void>)[];
     validation?: ValidationChain[];
     pararms?: Record<any, any>;
 }

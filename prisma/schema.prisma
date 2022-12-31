@@ -16,7 +16,7 @@ model refresh_token {
     createdAt        DateTime       @default(now())
     updatedAt        DateTime       @updatedAt
     deletedAt        DateTime?      @db.DateTime(0)
-    user             user           @relation(fields: [user_id], references: [user_id])
+    user             user           @relation(fields: [user_id], references: [id])
 }
 
 enum refresh_status {
@@ -25,7 +25,7 @@ enum refresh_status {
 }
 
 model user {
-    user_id   Int             @id @default(autoincrement())
+    id        Int             @id @default(autoincrement())
     status    users_status    @default(active)
     username  String          @db.VarChar(50)
     email     String          @unique @db.VarChar(50)
@@ -34,6 +34,16 @@ model user {
     updatedAt DateTime        @updatedAt
     deletedAt DateTime?       @db.DateTime(0)
     tokens    refresh_token[]
+    posts     post[]
+}
+
+model post {
+    id        Int     @id @default(autoincrement())
+    title     String
+    content   String?
+    published Boolean @default(false)
+    author    user?   @relation(fields: [authorId], references: [id])
+    authorId  Int?
 }
 
 enum users_status {

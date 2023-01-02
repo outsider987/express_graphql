@@ -7,7 +7,7 @@ import { sucessResponse } from '~/http/utils/response';
 class PostsController extends Controller {
     constructor() {
         super();
-        this.path = '/user';
+        this.path = '/post';
         this.routes = [
             {
                 path: '/',
@@ -16,9 +16,11 @@ class PostsController extends Controller {
             },
         ];
     }
-    async getPosts(req: Request, res: Response) {
+    async getPosts(req: Request<never, never, never, { searchText: '' }>, res: Response) {
+        const { searchText } = req.query;
         const userService = new PostsService();
-        const dates = await userService.getPosts(req);
+
+        const dates = await userService.getPosts(searchText);
         localLog(dates);
         sucessResponse(res, dates);
     }

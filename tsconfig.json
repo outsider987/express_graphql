@@ -20,6 +20,7 @@
         "esModuleInterop":true,
         "allowJs": true,
         "skipLibCheck":true,
+        "strict": false,
         "paths": {
             "~/*": ["*"] // resolve any `~/foo/bar` to `<baseUrl>/foo/bar`
         }

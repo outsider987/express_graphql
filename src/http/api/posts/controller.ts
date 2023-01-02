@@ -3,6 +3,7 @@ import PostsService from './service';
 import Controller, { Methods } from '../../common/baseController';
 import { localLog } from '~/http/utils/logger';
 import { sucessResponse } from '~/http/utils/response';
+import logger from 'node-color-log';
 
 class PostsController extends Controller {
     constructor() {
@@ -10,7 +11,7 @@ class PostsController extends Controller {
         this.path = '/post';
         this.routes = [
             {
-                path: '/',
+                path: '',
                 method: Methods.GET,
                 handler: this.getPosts,
             },
@@ -21,7 +22,7 @@ class PostsController extends Controller {
         const userService = new PostsService();
 
         const dates = await userService.getPosts(searchText);
-        localLog(dates);
+
         sucessResponse(res, dates);
     }
 }

@@ -1,10 +1,10 @@
-import { TypedRequestBody } from './../utils/request';
+import { TypedRequestBody } from '../../utils/request';
 import { Request, Response } from 'express';
-import BaseService from './baseService';
+import BaseService from '../../common/baseService';
 import { user } from '@prisma/client';
 import bcrypt from 'bcrypt';
-import { generateJWTToken } from '../utils/jwt';
-import AuthException from '../exceptions/AuthException';
+import { generateJWTToken } from '../../utils/jwt';
+import AuthException from '../../exceptions/AuthException';
 
 class AuthService extends BaseService {
     async register(res: Request) {
@@ -28,10 +28,10 @@ class AuthService extends BaseService {
 
         if (!email || !user_id) throw AuthException.tokenNotExist({ email, user_id });
 
-        const data = await this.prisma.user.findFirst({ where: { email, user_id } });
+        const data = await this.prisma.user.findFirst({ where: { email, id: user_id } });
         if (!data) throw AuthException.loginNoUser(data);
 
-        return await this.createTokens({ username: data.username, email: data.email, user_id: data.user_id });
+        return await this.createTokens({ username: data.username, email: data.email, user_id: data.id });
     }
 
     async passwordGrant(email: string, password: string) {
@@ -40,7 +40,7 @@ class AuthService extends BaseService {
 
         if (await !bcrypt.compare(data?.password, password)) throw AuthException.loginNoUser(data);
 
-        return this.createTokens({ username: data.username, email: data.email, user_id: data.user_id });
+        return this.createTokens({ username: data.username, email: data.email, user_id: data.id });
     }
 
     async createTokens(dto: { username: string; email: string; user_id: number }) {

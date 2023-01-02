@@ -1,11 +1,11 @@
-import { TypedRequestBody } from './../utils/request';
+import { TypedRequestBody } from '../../utils/request';
 import { IRoute, Request, Response } from 'express';
-import AuthService from '../services/auth';
-import Controller, { Methods } from './base';
+import AuthService from './service';
+import Controller, { Methods } from '../../common/baseController';
 import { prisma, Prisma, user } from '@prisma/client';
 import { body } from 'express-validator';
-import { sucessResponse } from '../utils/response';
-import { handleAuth } from '../middlewares/local/authHandler';
+import { sucessResponse } from '../../utils/response';
+import { handleAuth } from '../../middlewares/local/authHandler';
 
 class AuthController extends Controller {
     constructor() {

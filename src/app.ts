@@ -3,7 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import Server from './http/utils/server';
-import controllers from './http/controllers';
+import { controllers } from '~/http/utils/module';
 import bodyParser from 'body-parser';
 import exceptionHandler from './http/middlewares/exceptions';
 

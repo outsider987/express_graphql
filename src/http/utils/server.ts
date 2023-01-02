@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Application, RequestHandler, ErrorRequestHandler } from 'express';
-import Controller from '~/http/controllers/base';
+import Controller from '~/http/common/baseController';
 import http from 'http';
 
 class Server {

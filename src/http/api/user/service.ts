@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import BaseService from './baseService';
+import BaseService from '~/http/common/baseService';
 
 class UserService extends BaseService {
     async users(res: Request) {

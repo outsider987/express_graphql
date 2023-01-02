@@ -1,8 +1,8 @@
 import { IRoute, Request, Response } from 'express';
-import UserService from '../services/user';
-import { localLog } from '../utils/logger';
-import { sucessResponse } from '../utils/response';
-import Controller, { Methods } from './base';
+import UserService from './service';
+import Controller, { Methods } from '../../common/baseController';
+import { localLog } from '~/http/utils/logger';
+import { sucessResponse } from '~/http/utils/response';
 
 class UserController extends Controller {
     constructor() {

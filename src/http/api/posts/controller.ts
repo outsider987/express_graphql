@@ -22,7 +22,7 @@ class PostsController extends Controller {
         const userService = new PostsService();
 
         const dates = await userService.getPosts(searchText);
-
+        console.log(dates);
         sucessResponse(res, dates);
     }
 }

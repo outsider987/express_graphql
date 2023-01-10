@@ -4,9 +4,20 @@ import BaseService from '~/http/common/baseService';
 
 class PostsService extends BaseService {
     async getPosts(searchText: string) {
-        return this.prisma.post.findMany({
+        return this.prisma.marvel.findMany({
             where: {
-                OR: [{ title: { contains: searchText } }, { body: { contains: searchText } }],
+                OR: [
+                    { comic_name: { contains: searchText } },
+                    { issue_title: { contains: searchText } },
+                    { active_years: searchText },
+                    { publish_date: searchText },
+                    { penciler: { contains: searchText } },
+                    { writer: { contains: searchText } },
+                    { cover_artist: { contains: searchText } },
+                    { Format: { contains: searchText } },
+                    { Rating: { contains: searchText } },
+                    // {Price:{}}
+                ],
             },
         });
     }

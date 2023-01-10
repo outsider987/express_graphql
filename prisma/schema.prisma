@@ -61,8 +61,23 @@ model category {
     posts post[]
 }
 
+model marvel {
+    id                Int     @id @default(autoincrement())
+    comic_name        String
+    active_years      String
+    issue_title       String
+    publish_date      String
+    issue_description String
+    penciler          String
+    writer            String
+    cover_artist      String
+    Imprint           String
+    Format            String
+    Rating            String
+    Price             Decimal
+}
+
 enum users_status {
     active
     disabled
 }
-

@@ -6,6 +6,7 @@ import Server from './http/utils/server';
 import { controllers } from '~/http/utils/module';
 import bodyParser from 'body-parser';
 import exceptionHandler from './http/middlewares/exceptions';
+import passport from './http/utils/passport';
 
 const prisma = new PrismaClient();
 
@@ -19,7 +20,12 @@ const app = express();
 const port = process.env.PORT ? Number(process.env.PORT) : 4000;
 const server = new Server(app, prisma, port);
 
-const globalMiddleware: Array<RequestHandler> = [urlencoded({ extended: false }), express.json(), cors(corsOptions)];
+const globalMiddleware: Array<RequestHandler> = [
+    urlencoded({ extended: false }),
+    express.json(),
+    cors(corsOptions),
+    passport.initialize(),
+];
 const globalMiddlewareError: Array<ErrorRequestHandler> = [exceptionHandler];
 
 Promise.resolve()

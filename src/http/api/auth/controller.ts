@@ -6,6 +6,7 @@ import { prisma, Prisma, user } from '@prisma/client';
 import { body } from 'express-validator';
 import { sucessResponse } from '../../utils/response';
 import { handleAuth } from '../../middlewares/local/authHandler';
+import passport from '~/http/utils/passport';
 
 class AuthController extends Controller {
     constructor() {
@@ -39,6 +40,16 @@ class AuthController extends Controller {
                 handler: this.Test,
                 localMiddleware: [handleAuth],
             },
+            {
+                path: '/google',
+                method: Methods.GET,
+                handler: passport.authenticate('google', { scope: ['profile'] }),
+            },
+            {
+                path: '/google/callback',
+                method: Methods.GET,
+                handler: this.googleCallBack,
+            },
         ];
     }
 
@@ -62,6 +73,11 @@ class AuthController extends Controller {
 
     async Test(req: TypedRequestBody, res: Response) {
         sucessResponse(res, { sucess: true });
+    }
+
+    async googleCallBack(req: TypedRequestBody, res: Response) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
     }
 }
 

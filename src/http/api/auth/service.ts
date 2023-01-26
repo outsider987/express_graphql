@@ -1,7 +1,7 @@
 import { TypedRequestBody } from '../../utils/request';
 import { Request, Response } from 'express';
 import BaseService from '../../common/baseService';
-import { user } from '@prisma/client';
+import { PrismaClient, user } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { generateJWTToken } from '../../utils/jwt';
 import AuthException from '../../exceptions/AuthException';
@@ -47,27 +47,52 @@ class AuthService extends BaseService {
         const accessToken = generateJWTToken({ ...dto });
         const refreshToken = generateJWTToken({ ...dto }, '20s');
 
-        const refershData = await this.prisma.refresh_token.findFirst({ where: { user_id: dto.user_id } });
-
         console.log('start JWT sign ');
-        if (refershData) {
-            this.prisma.refresh_token.update({
-                where: { id: refershData?.id },
-                data: {
-                    refresh_token_id: refreshToken,
+
+        const token = await this.prisma.refresh_token.upsert({
+            where: { user_id: dto.user_id },
+            update: {
+                refresh_token_id: refreshToken,
+            },
+            create: { user_id: dto.user_id, refresh_token_id: refreshToken },
+        });
+        if (!token) AuthException.createTokenFailed(token);
+
+        console.log('finished JWT sign ');
+        return { accessToken, refreshToken };
+    }
+
+    async saveGoogleUser(user: any) {
+        const hashPassword = await bcrypt.hash(user.id, 15);
+        const userResult = await this.prisma.user.findUnique({ where: { email: user._json.email } });
+        if (!userResult) {
+            const res = await this.prisma.user.create({
+                data: { email: user._json.email, username: user._json.displayName, password: hashPassword },
+            });
+
+            return this.prisma.oauth2_provider.upsert({
+                where: {
+                    provider_oauth2_id: { oauth2_id: user.id, provider: 'google' },
+                },
+                create: {
+                    oauth2_id: user.id,
+                    user_id: res.id,
+                    email: user._json.email,
+                    provider: 'google',
+                },
+                update: {
+                    email: user._json.email,
                 },
             });
         } else {
-            const token = await this.prisma.refresh_token.create({
-                data: {
-                    user_id: dto.user_id,
-                    refresh_token_id: refreshToken,
-                },
-            });
-            if (!token) AuthException.createTokenFailed(token);
+            return userResult;
         }
-        console.log('finished JWT sign ');
-        return { accessToken, refreshToken };
+    }
+
+    async getGoogleUserByGoogleId(google_id: any, provider: any) {
+        return this.prisma.oauth2_provider.findUnique({
+            where: { provider_oauth2_id: { oauth2_id: google_id, provider: provider } },
+        });
     }
 }
 export default AuthService;

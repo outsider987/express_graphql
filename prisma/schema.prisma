@@ -25,15 +25,31 @@ enum refresh_status {
 }
 
 model user {
-    id        Int             @id @default(autoincrement())
-    status    users_status    @default(active)
-    username  String          @db.VarChar(50)
-    email     String          @unique @db.VarChar(50)
-    password  String          @db.VarChar(100)
-    createdAt DateTime        @default(now())
-    updatedAt DateTime        @updatedAt
-    deletedAt DateTime?       @db.DateTime(0)
-    tokens    refresh_token[]
+    id              Int               @id @default(autoincrement())
+    status          users_status      @default(active)
+    username        String            @db.VarChar(50)
+    email           String            @unique @db.VarChar(50)
+    password        String            @db.VarChar(100)
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+    deletedAt       DateTime?         @db.DateTime(0)
+    imageThumbnail  String?           @db.VarChar(250)
+    tokens          refresh_token[]
+    oauth2_provider oauth2_provider[]
+}
+
+model oauth2_provider {
+    id        Int                  @id @default(autoincrement())
+    user_id   Int                  @unique
+    email     String               @unique @db.VarChar(50)
+    oauth2_id String
+    provider  oauth2_provider_name
+    createdAt DateTime             @default(now())
+    updatedAt DateTime             @updatedAt
+    deletedAt DateTime?            @db.DateTime(0)
+    user      user                 @relation(fields: [user_id], references: [id])
+
+    @@unique([provider, oauth2_id])
 }
 
 model post {
@@ -80,4 +96,9 @@ model marvel {
 enum users_status {
     active
     disabled
+}
+
+enum oauth2_provider_name {
+    google
+    facebook
 }

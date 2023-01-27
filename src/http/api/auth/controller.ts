@@ -83,6 +83,8 @@ class AuthController extends Controller {
         sucessResponse(res, datas);
     }
 
+    async googleCallBack(req: TypedRequestBody, res: Response) {}
+
     async Test(req: TypedRequestBody, res: Response) {
         sucessResponse(res, { sucess: true });
     }

@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { title } from 'process';
+import { prisma } from '~/app';
 import BaseService from '~/http/common/baseService';
 
 class PostsService extends BaseService {
     async getPosts(searchText: string) {
-        return this.prisma.marvel.findMany({
+        return prisma.marvel.findMany({
             where: {
                 OR: [
                     { comic_name: { contains: searchText } },

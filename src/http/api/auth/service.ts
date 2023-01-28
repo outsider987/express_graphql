@@ -5,13 +5,14 @@ import { PrismaClient, user } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { generateJWTToken } from '../../utils/jwt';
 import AuthException from '../../exceptions/AuthException';
+import { prisma } from '~/app';
 
 class AuthService extends BaseService {
     async register(res: Request) {
         const { password, username, email } = res.body as user;
         const hashPassword = await bcrypt.hash(password, 15);
 
-        const user = await this.prisma.user.create({
+        const user = await prisma.user.create({
             data: { username, password: hashPassword, email },
         });
 
@@ -28,14 +29,14 @@ class AuthService extends BaseService {
 
         if (!email || !user_id) throw AuthException.tokenNotExist({ email, user_id });
 
-        const data = await this.prisma.user.findFirst({ where: { email, id: user_id } });
+        const data = await prisma.user.findFirst({ where: { email, id: user_id } });
         if (!data) throw AuthException.loginNoUser(data);
 
         return await this.createTokens({ username: data.username, email: data.email, user_id: data.id });
     }
 
     async passwordGrant(email: string, password: string) {
-        const data = await this.prisma.user.findFirst({ where: { email } });
+        const data = await prisma.user.findFirst({ where: { email } });
         if (!data) throw AuthException.loginNoUser(data);
 
         if (await !bcrypt.compare(data?.password, password)) throw AuthException.loginNoUser(data);
@@ -49,7 +50,7 @@ class AuthService extends BaseService {
 
         console.log('start JWT sign ');
 
-        const token = await this.prisma.refresh_token.upsert({
+        const token = await prisma.refresh_token.upsert({
             where: { user_id: dto.user_id },
             update: {
                 refresh_token_id: refreshToken,
@@ -64,13 +65,14 @@ class AuthService extends BaseService {
 
     async saveGoogleUser(user: any) {
         const hashPassword = await bcrypt.hash(user.id, 15);
-        const userResult = await this.prisma.user.findUnique({ where: { email: user._json.email } });
+        const mail = user._json.email;
+        const userResult = await prisma.user.findUnique({ where: { email: mail } });
         if (!userResult) {
-            const res = await this.prisma.user.create({
-                data: { email: user._json.email, username: user._json.displayName, password: hashPassword },
+            const res = await prisma.user.create({
+                data: { email: user._json.email, username: user._json.name, password: hashPassword },
             });
 
-            return this.prisma.oauth2_provider.upsert({
+            return prisma.oauth2_provider.upsert({
                 where: {
                     provider_oauth2_id: { oauth2_id: user.id, provider: 'google' },
                 },
@@ -90,8 +92,9 @@ class AuthService extends BaseService {
     }
 
     async getGoogleUserByGoogleId(google_id: any, provider: any) {
-        return this.prisma.oauth2_provider.findUnique({
-            where: { provider_oauth2_id: { oauth2_id: google_id, provider: provider } },
+        const id = google_id;
+        return prisma.oauth2_provider.findUnique({
+            where: { provider_oauth2_id: { oauth2_id: id, provider: provider } },
         });
     }
 }

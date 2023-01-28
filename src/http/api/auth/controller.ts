@@ -7,6 +7,7 @@ import { body } from 'express-validator';
 import { failedResponse, sucessResponse } from '../../utils/response';
 import { handleAuth } from '../../middlewares/local/authHandler';
 import passport from '~/http/utils/passport';
+require('dotenv').config();
 
 class AuthController extends Controller {
     constructor() {
@@ -50,17 +51,21 @@ class AuthController extends Controller {
                 method: Methods.GET,
                 localMiddleware: [
                     passport.authenticate('google', {
-                        // successRedirect: 'http://127.0.0.1:8080/#/member/login',
                         failureRedirect: '/login',
                         session: true,
                     }),
                 ],
-                handler: this.googleCallBack,
+                handler: this.GoogleCallBack,
             },
             {
                 path: '/login/success',
                 method: Methods.GET,
-                handler: this.loginSucess,
+                handler: this.LoginSucess,
+            },
+            {
+                path: '/logout',
+                method: Methods.GET,
+                handler: this.LogOut,
             },
         ];
     }
@@ -74,7 +79,16 @@ class AuthController extends Controller {
     async Login(req: Request, res: Response) {
         const authService = new AuthService();
         const datas = await authService.login(req);
-        res.json(sucessResponse(res, datas));
+        sucessResponse(res, datas);
+    }
+
+    async LogOut(req: TypedRequestBody, res: Response, next: any) {
+        await req.logOut({ keepSessionInfo: false }, (err) => {
+            console.log(err);
+            // failedResponse(res, err, 400);
+        });
+
+        return sucessResponse(res, 'log out');
     }
 
     async Refresh(req: TypedRequestBody, res: Response) {
@@ -83,13 +97,11 @@ class AuthController extends Controller {
         sucessResponse(res, datas);
     }
 
-    async googleCallBack(req: TypedRequestBody, res: Response) {}
-
     async Test(req: TypedRequestBody, res: Response) {
         sucessResponse(res, { sucess: true });
     }
 
-    async loginSucess(req: TypedRequestBody, res: Response) {
+    async LoginSucess(req: TypedRequestBody, res: Response) {
         const user = req.user as any;
 
         if (user) {
@@ -101,15 +113,14 @@ class AuthController extends Controller {
                 user_id: googleUser.id,
             });
             sucessResponse(res, tokens);
-        } else throw 'login failed';
+        } else failedResponse(res, 'no provider user', 401);
     }
 
-    async googleCallBack(req: TypedRequestBody, res: Response) {
+    async GoogleCallBack(req: TypedRequestBody, res: Response) {
         // Successful authentication, redirect home.
         const code = req.query.code as string;
         const user = req.user;
         const pathUrl = (req.query.state as string) || '/';
-        const prisma = new PrismaClient();
 
         const authService = new AuthService();
         const res2 = await authService.saveGoogleUser(req.user);
@@ -117,7 +128,7 @@ class AuthController extends Controller {
             failedResponse(res, 'Authorization code not provided!', 401);
         }
 
-        res.redirect('http://127.0.0.1:8080/#/member/login');
+        res.redirect(`${process.env.FRONTEND_URL}/#/member/login`);
         // sucessResponse(res, { sucess: true });
     }
 }

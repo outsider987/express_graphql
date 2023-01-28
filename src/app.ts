@@ -8,8 +8,28 @@ import bodyParser from 'body-parser';
 import exceptionHandler from './http/middlewares/exceptions';
 import passport from './http/utils/passport';
 import expressSession from 'express-session';
+import connectRedis from 'connect-redis';
+import { createClient } from 'redis';
 
-const prisma = new PrismaClient();
+const RedisStore = connectRedis(expressSession);
+
+const client = createClient({
+    // url: 'redis://:default@redis-10833.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:10833',
+    socket: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT),
+    },
+    legacyMode: true,
+    password: process.env.REDIS_PASS,
+});
+
+client.on('connect', () => {
+    console.log('connected to redis successfully!');
+});
+
+client.on('error', (error) => {
+    console.log('Redis connection error :', error);
+});
 
 const corsOptions = {
     origin: ['http://localhost:8080', 'http://127.0.0.1:8080', 'https://outsider987.github.io'],
@@ -19,13 +39,22 @@ const corsOptions = {
     // exposedHeaders: ['set-cookie'],
 };
 let sess = {
-    secret: 'keyboard cat',
-    cookie: {},
+    secret: 'test', //decode or encode session
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 2 * 60 * 1000,
+    },
+    store: new RedisStore({
+        client: client,
+        // url: 'redis://:default@redis-10833.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:10833',
+        // pass: process.env.REDIS_PASS,
+    }),
 };
 
 const app = express();
 const port = process.env.PORT ? Number(process.env.PORT) : 4000;
-const server = new Server(app, prisma, port);
+const server = new Server(app, port);
 
 const globalMiddleware: Array<RequestHandler> = [
     urlencoded({ extended: false }),
@@ -39,9 +68,12 @@ const globalMiddlewareError: Array<ErrorRequestHandler> = [exceptionHandler];
 
 Promise.resolve()
     .then(() => server.initDatabase())
+    .then(() => client.connect())
     .then(() => {
         server.loadMiddleware(globalMiddleware);
         server.loadControllers(controllers);
         server.loadErrorMiddleware(globalMiddlewareError);
         server.run();
     });
+
+export const prisma = new PrismaClient();

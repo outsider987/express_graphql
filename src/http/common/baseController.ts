@@ -30,7 +30,6 @@ export default abstract class Controller {
     public path!: string;
     // Array of objects which implement IRoutes interface
     protected routes: Array<IRoute> = [];
-    public prisma = new PrismaClient();
 
     public setRoutes = (): Router => {
         // Set HTTP method, middleware, and handler for each route

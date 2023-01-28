@@ -1,6 +1,4 @@
 import { PrismaClient } from '@prisma/client';
 
-class BaseService {
-    public prisma: PrismaClient = new PrismaClient();
-}
+class BaseService {}
 export default BaseService;

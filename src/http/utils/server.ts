@@ -6,8 +6,9 @@ import http from 'http';
 class Server {
     private app: Application;
     private readonly port: number;
+    public prisma: PrismaClient;
 
-    constructor(app: Application, database: PrismaClient, port: number) {
+    constructor(app: Application, port: number) {
         this.app = app;
         this.port = port;
     }

@@ -20,7 +20,7 @@ export default passport.use(
             scope: ['openid', 'email', 'profile'],
         },
         async (accessToken, refreshToken, profile, done) => {
-            done(null, profile);
+            await done(null, profile);
             // Find or create the user here
         },
     ),

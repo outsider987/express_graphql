@@ -11,12 +11,13 @@ passport.serializeUser(function (user: any, done) {
 passport.deserializeUser(function (user: any, done) {
     return done(null, user);
 });
+
 export default passport.use(
     new GoogleStrategy(
         {
             clientID: process.env.GOOGLE_CLIENT_ID as any,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as any,
-            callbackURL: '/auth/google/callback',
+            callbackURL: `${process.env.BACKEND_URL}/auth/google/callback`,
             scope: ['openid', 'email', 'profile'],
         },
         async (accessToken, refreshToken, profile, done) => {

@@ -36,9 +36,10 @@
     "scripts": {
         "prismix": "npx prismix && prisma format",
         "pre-env": "npm i -D tsconfig-paths",
+        "prev": "tsc && tsc-alias",
         "prismix-g": "prisma generate ",
         "dev": "prisma generate && nodemon  src/app.ts --watch ",
-        "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/app.js  ",
+        "start": "node  dist/app.js  ",
         "deploy": "git add . && git commit -m Heroku && git push ",
         "swagger-autogen": "node ./swagger.js",
         "codegen": "graphql-code-generator --config codegen.yml",
@@ -70,6 +71,7 @@
         "passport-google-oauth20": "^2.0.0",
         "ramda": "^0.28.0",
         "redis": "^4.6.2",
-        "swagger-autogen": "^2.21.5"
+        "swagger-autogen": "^2.21.5",
+        "tsc-alias": "^1.8.2"
     }
 }

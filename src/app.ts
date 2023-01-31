@@ -14,7 +14,6 @@ import { createClient } from 'redis';
 const RedisStore = connectRedis(expressSession);
 
 const client = createClient({
-    // url: 'redis://:default@redis-10833.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:10833',
     socket: {
         host: process.env.REDIS_HOST,
         port: parseInt(process.env.REDIS_PORT),
@@ -43,17 +42,16 @@ let sess = {
     resave: false,
     saveUninitialized: false,
     cookie: {
+        secure: true,
         maxAge: 2 * 60 * 1000,
     },
     store: new RedisStore({
         client: client,
-        // url: 'redis://:default@redis-10833.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:10833',
-        // pass: process.env.REDIS_PASS,
     }),
 };
 
 const app = express();
-const port = process.env.PORT ? Number(process.env.PORT) : 4000;
+const port = process.env.PORT ? Number(process.env.PORT) : 8000;
 const server = new Server(app, port);
 
 const globalMiddleware: Array<RequestHandler> = [

@@ -52,7 +52,6 @@ class AuthController extends Controller {
                 localMiddleware: [
                     passport.authenticate('google', {
                         failureRedirect: '/login',
-                        session: true,
                     }),
                 ],
                 handler: this.GoogleCallBack,
@@ -103,7 +102,8 @@ class AuthController extends Controller {
 
     async LoginSucess(req: TypedRequestBody, res: Response) {
         const user = req.user as any;
-
+        console.log('user');
+        console.log(user);
         if (user) {
             const authService = new AuthService();
             const googleUser = await authService.getGoogleUserByGoogleId(user.id, 'google');
@@ -121,14 +121,13 @@ class AuthController extends Controller {
         const code = req.query.code as string;
         const user = req.user;
         const pathUrl = (req.query.state as string) || '/';
-
+        console.log(user);
         const authService = new AuthService();
         const res2 = await authService.saveGoogleUser(req.user);
         if (!code) {
-            failedResponse(res, 'Authorization code not provided!', 401);
+            return failedResponse(res, 'Authorization code not provided!', 401);
         }
-
-        res.redirect(`${process.env.FRONTEND_URL}/#/member/login`);
+        return res.redirect(`${process.env.FRONTEND_URL}/#/member/login`);
         // sucessResponse(res, { sucess: true });
     }
 }

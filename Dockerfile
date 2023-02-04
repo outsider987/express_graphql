@@ -7,6 +7,9 @@ COPY package*.json ./
 COPY prisma .
 COPY tsconfig.json ./
 COPY ./src ./src
+COPY ./.env.prod .
+ENV $(cat .env.prod | xargs)
+
 
 RUN npm i -g prisma;
 
@@ -26,12 +29,8 @@ COPY package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY ./tsconfig.json .
-COPY ./.env.prod .
+
 RUN npm i -g cross-env;
-RUN set -a && \
-    [ -f .env ] && \
-    . .env.prod && \
-    set +a
 
 
 EXPOSE 8000

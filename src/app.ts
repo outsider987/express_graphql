@@ -10,11 +10,9 @@ import passport from './http/utils/passport';
 import expressSession, { SessionOptions } from 'express-session';
 import connectRedis from 'connect-redis';
 import { createClient } from 'redis';
-import dotenv from 'dotenv';
 
 const { NODE_ENV } = process.env;
 const isProd = NODE_ENV === 'prod';
-dotenv.config({ path: `.env.${NODE_ENV}` });
 
 const RedisStore = connectRedis(expressSession);
 

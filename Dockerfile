@@ -27,10 +27,14 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY ./tsconfig.json .
 COPY ./.env.prod .
-RUN set -a && . .env.prod && set +a
+RUN npm i -g cross-env;
+RUN set -a && \
+    [ -f .env ] && \
+    . .env.prod && \
+    set +a
 
 
 EXPOSE 8000
-RUN npm i -g cross-env;
+
 
 CMD ["npm", "run", "start"]

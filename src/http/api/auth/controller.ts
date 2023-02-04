@@ -7,7 +7,6 @@ import { body } from 'express-validator';
 import { failedResponse, sucessResponse } from '../../utils/response';
 import { handleAuth } from '../../middlewares/local/authHandler';
 import passport from '~/http/utils/passport';
-require('dotenv').config();
 
 class AuthController extends Controller {
     constructor() {

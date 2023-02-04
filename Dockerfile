@@ -22,7 +22,8 @@ FROM node:18.8-alpine
 ENV NODE_ENV production
 LABEL fly_launch_runtime="nodejs"
 WORKDIR /app
-
+COPY ./.env.prod .
+ENV $(cat .env.prod | xargs)
 RUN npm install -g npm@9.4.0
 
 COPY package*.json ./

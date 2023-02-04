@@ -11,6 +11,9 @@ class Server {
     constructor(app: Application, port: number) {
         this.app = app;
         this.port = port;
+
+        this.app.enable('trust proxy');
+        this.app.set('trust proxy', 1);
     }
 
     public run(): http.Server {

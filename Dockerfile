@@ -9,6 +9,7 @@ COPY tsconfig.json ./
 COPY ./src ./src
 
 RUN npm i -g prisma;
+
 RUN npm install ;
 RUN npx prisma generate
 RUN npm run prev
@@ -25,8 +26,11 @@ COPY package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY ./tsconfig.json .
-COPY ./.env .
+COPY ./.env.prod .
+RUN set -a && . .env.prod && set +a
+
 
 EXPOSE 8000
+RUN npm i -g cross-env;
 
 CMD ["npm", "run", "start"]

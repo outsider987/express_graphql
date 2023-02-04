@@ -84,7 +84,6 @@ class AuthController extends Controller {
     async LogOut(req: TypedRequestBody, res: Response, next: any) {
         await req.logOut({ keepSessionInfo: false }, (err) => {
             console.log(err);
-            // failedResponse(res, err, 400);
         });
 
         return sucessResponse(res, 'log out');
@@ -121,7 +120,6 @@ class AuthController extends Controller {
         const code = req.query.code as string;
         const user = req.user;
         const pathUrl = (req.query.state as string) || '/';
-        console.log(user);
         const authService = new AuthService();
         const res2 = await authService.saveGoogleUser(req.user);
         if (!code) {

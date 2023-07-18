@@ -20,7 +20,7 @@ const injectRespondMethod = async (err: TypeError, req: Request, res: Response, 
 
         next();
     } catch (error) {
-        logger.bold().bgColor('red').error(`${error}}`);
+        logger.bold().bgColor('red').error(`${error}\n ${error.message}}`);
         next();
     }
 };

@@ -14,6 +14,16 @@ class Server {
 
         this.app.enable('trust proxy');
         this.app.set('trust proxy', 1);
+
+        this.app.use((req, res, next) => {
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
+            res.set('credentials', 'include');
+
+            res.set('Access-Control-Allow-Origin', req.headers.origin);
+            res.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+            res.set('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+            next();
+        });
     }
 
     public run(): http.Server {

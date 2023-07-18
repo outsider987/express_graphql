@@ -2,7 +2,7 @@ import { TypedRequestBody } from '../../utils/request';
 import { IRoute, Request, Response } from 'express';
 import AuthService from './service';
 import Controller, { Methods } from '../../common/baseController';
-import { prisma, Prisma, PrismaClient, user } from '@prisma/client';
+import { Prisma, PrismaClient, user } from '@prisma/client';
 import { body } from 'express-validator';
 import { failedResponse, sucessResponse } from '../../utils/response';
 import { handleAuth } from '../../middlewares/local/authHandler';
@@ -99,9 +99,11 @@ class AuthController extends Controller {
     }
 
     async LoginSucess(req: TypedRequestBody, res: Response) {
+        const cookieValue = await req.cookies.name;
+        console.log(cookieValue);
         const user = req.user as any;
-        console.log('user');
-        console.log(user);
+
+        // console.log(user);
         if (user) {
             const authService = new AuthService();
             const googleUser = await authService.getGoogleUserByGoogleId(user.id, 'google');

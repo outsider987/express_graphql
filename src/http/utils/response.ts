@@ -58,8 +58,7 @@ export const sucessResponse = (res: Response, data = {}) => {
 export const failedResponse = (res: Response, error: any = {}, status: number = 404) => {
     res.status(status).send({
         status: false,
-        message: 'failed',
+        message: error.message,
         error: error,
     });
-    
 };

@@ -10,6 +10,7 @@ import passport from './http/utils/passport';
 import expressSession, { SessionOptions } from 'express-session';
 import connectRedis from 'connect-redis';
 import { createClient } from 'redis';
+import cookieParser from 'cookie-parser';
 
 const { NODE_ENV } = process.env;
 const isProd = NODE_ENV === 'prod';
@@ -49,7 +50,7 @@ let sess: SessionOptions = {
     resave: true,
     saveUninitialized: true,
     secret: 'test',
-    cookie: { secure: isProd, sameSite: isProd ? 'none' : 'lax', maxAge: 1000 * 60 * 60 * 24 },
+    cookie: { httpOnly: isProd, secure: isProd, sameSite: isProd ? 'none' : 'lax', maxAge: 1000 * 60 * 60 * 24 },
     store: new RedisStore({
         client: client,
     }),
@@ -64,6 +65,7 @@ const globalMiddleware: Array<RequestHandler> = [
     express.json(),
     cors(corsOptions),
     expressSession(sess),
+    cookieParser(),
     passport.initialize(),
     passport.session(),
 ];

@@ -7,6 +7,8 @@ import { body } from 'express-validator';
 import { failedResponse, sucessResponse } from '../../utils/response';
 import { handleAuth } from '../../middlewares/local/authHandler';
 import passport from '~/http/utils/passport';
+import jwt from 'jsonwebtoken';
+require('dotenv').config();
 
 class AuthController extends Controller {
     constructor() {
@@ -101,6 +103,9 @@ class AuthController extends Controller {
     async LoginSucess(req: TypedRequestBody, res: Response) {
         const cookieValue = await req.cookies.name;
         console.log(cookieValue);
+        console.log(req.cookies);
+        console.log(req.isAuthenticated());
+
         const user = req.user as any;
 
         // console.log(user);
